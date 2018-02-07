@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 
@@ -52,6 +53,7 @@ public class Viagem implements Serializable {
 		this.acompanhante = acompanhante;
 	}
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public Date getDataPartida() {
 		return dataPartida;
 	}
@@ -59,7 +61,8 @@ public class Viagem implements Serializable {
 	public void setDataPartida(Date dataPartida) {
 		this.dataPartida = dataPartida;
 	}
-	@JsonSerialize(using = DateSerializer.class)
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public Date getDataRetorno() {
 		return dataRetorno;
 	}

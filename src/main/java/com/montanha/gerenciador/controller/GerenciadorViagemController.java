@@ -32,20 +32,20 @@ public class GerenciadorViagemController {
 	private ViagemServices viagemService;
 
 	@PostMapping(path = "/new")
-	public ResponseEntity<Response<ViagemDto>> cadastrar(@Valid @RequestBody ViagemDto viagemDto,
-			BindingResult result) {
-		Response<ViagemDto> response = new Response<ViagemDto>();
+	public ResponseEntity<Response<Viagem>> cadastrar(@Valid @RequestBody ViagemDto viagemDto, BindingResult result) {
+		Response<Viagem> response = new Response<Viagem>();
 
 		if (result.hasErrors()) {
 			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
 			return ResponseEntity.badRequest().body(response);
 		}
 
-		this.viagemService.salvar(viagemDto);
+		Viagem viagemSalva = this.viagemService.salvar(viagemDto);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(viagemDto.getId())
 				.toUri();
 
-		return ResponseEntity.created(location).build();
+		response.setData(viagemSalva);
+		return ResponseEntity.created(location).body(response);
 	}
 
 	@GetMapping
