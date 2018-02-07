@@ -55,28 +55,12 @@ public class GerenciadorViagemController {
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<Viagem> buscar(@PathVariable("id") Long id) {
+	public ResponseEntity<Response<Viagem>> buscar(@PathVariable("id") Long id) {
+		
 		Viagem viagem = viagemService.buscar(id);
-		return ResponseEntity.status(HttpStatus.OK).body(viagem);
+		Response<Viagem> response = new Response<Viagem>();
+		response.setData(viagem);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
-	/*
-	 * @RequestMapping(method = RequestMethod.POST) public ResponseEntity<Void>
-	 * salvar(@Valid @RequestBody Autor autor) { autor =
-	 * autoresService.salvar(autor);
-	 * 
-	 * URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-	 * .path("/{id}").buildAndExpand(autor.getId()).toUri();
-	 * 
-	 * return ResponseEntity.created(uri).build(); }
-	 * 
-	 * @RequestMapping(method = RequestMethod.GET) public
-	 * ResponseEntity<List<Autor>> listar() { List<Autor> autores =
-	 * autoresService.listar(); return
-	 * ResponseEntity.status(HttpStatus.OK).body(autores); }
-	 * 
-	 * @RequestMapping(value = "/{id}", method = RequestMethod.GET) public
-	 * ResponseEntity<Autor> buscar(@PathVariable("id") Long id) { Autor autor =
-	 * autoresService.buscar(id); return
-	 * ResponseEntity.status(HttpStatus.OK).body(autor);
-	 */
+
 }
