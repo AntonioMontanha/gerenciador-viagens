@@ -39,4 +39,19 @@ public class ViagemServices {
 		}
 		return viagem;
 	}
+	
+	public List<Viagem> deletar(Viagem viagem) {
+	
+		viagemRepository.delete(viagem);
+		
+		return viagemRepository.findAll();
+		
+		
+	}
+
+	public Viagem buscarSemTratativa(Long id) {
+		Viagem viagem = viagemRepository.findOne(id);
+
+		return viagem;
+	}
 }

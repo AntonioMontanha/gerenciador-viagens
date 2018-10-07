@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,6 +62,15 @@ public class GerenciadorViagemController {
 		Response<Viagem> response = new Response<Viagem>();
 		response.setData(viagem);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
+	
+	@DeleteMapping(path = "/delete/{id}")
+	public ResponseEntity<List<Viagem>> delete(@PathVariable("id") Long id) {
+		
+		Viagem viagem = viagemService.buscarSemTratativa(id);
+		List<Viagem> viagens = viagemService.deletar(viagem);
+
+		return ResponseEntity.status(HttpStatus.OK).body(viagens);
 	}
 
 }
