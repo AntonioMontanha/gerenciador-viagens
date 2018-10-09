@@ -72,5 +72,6 @@ public class GerenciadorViagemController {
 
 		return ResponseEntity.status(HttpStatus.OK).body(viagens);
 	}
+	
 
 }
