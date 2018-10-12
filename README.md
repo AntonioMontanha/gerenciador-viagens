@@ -6,6 +6,8 @@
 
 3. Abra a aplicação na IDE de sua escolha
 
-4. Acesse a pasta src/main/java abra a package com.montanha.gerenciador e a classe GerenciadorViagensMontanhaApplication
+4. No diretorio do projeto execute mvn clean install
 
-5. Clique com o botão direito e selecione Run as > Java Aplication
+5. Acesse a pasta src/main/java abra a package com.montanha.gerenciador e a classe GerenciadorViagensMontanhaApplication
+
+6. Clique com o botão direito e selecione Run as > Java Aplication
