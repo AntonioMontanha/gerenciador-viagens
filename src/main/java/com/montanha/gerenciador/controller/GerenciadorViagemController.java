@@ -1,5 +1,6 @@
 package com.montanha.gerenciador.controller;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.montanha.gerenciador.dtos.ViagemDto;
 import com.montanha.gerenciador.entities.Viagem;
 import com.montanha.gerenciador.responses.Response;
@@ -60,9 +63,21 @@ public class GerenciadorViagemController {
 
 	@GetMapping(path = "/{id}")
 	@PreAuthorize("hasAnyRole('USUARIO')")
-	public ResponseEntity<Response<Viagem>> buscar(@PathVariable("id") Long id) {
+	public ResponseEntity<Response<Viagem>> buscar(@PathVariable("id") Long id) throws JsonParseException, JsonMappingException, IOException {
 		
 		Viagem viagem = viagemService.buscar(id);
+		Response<Viagem> response = new Response<Viagem>();
+		response.setData(viagem);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
+	
+	
+	@GetMapping(path = "buscarPorLocal/{localDeDestino}")
+	@PreAuthorize("hasAnyRole('USUARIO')")
+	public ResponseEntity<Response<Viagem>> buscarPorLocalDestino(@PathVariable("localDeDestino") String localDeDestino) {
+		
+		Viagem viagem = viagemService.buscarPorLocalDeDestino(localDeDestino);
 		Response<Viagem> response = new Response<Viagem>();
 		response.setData(viagem);
 		return ResponseEntity.status(HttpStatus.OK).body(response);

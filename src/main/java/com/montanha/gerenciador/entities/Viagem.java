@@ -40,6 +40,11 @@ public class Viagem implements Serializable {
 
 	@Column(name = "acompanhante", nullable = true)
 	private String acompanhante;
+	
+	@Column(name = "regiao", nullable = true)
+	private String regiao;
+	
+	private float temperatura;
 
 	public Viagem() {
 
@@ -94,7 +99,22 @@ public class Viagem implements Serializable {
 	public void setLocalDeDestino(String localDeDestino) {
 		this.localDeDestino = localDeDestino;
 	}
+	
+	public String getRegiao() {
+		return regiao;
+	}
 
+	public void setRegiao(String regiao) {
+		this.regiao = regiao;
+	}
+	
+	public float getTemperatura() {
+		return temperatura;
+	}
+
+	public void setTemperatura(float temperatura) {
+		this.temperatura = temperatura;
+	}
 	@Override
 	public String toString() {
 		return "Viagem [id=" + id + ", localDeDestino=" + localDeDestino + ", dataPartida=" + dataPartida

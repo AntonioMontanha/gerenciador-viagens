@@ -24,6 +24,9 @@ public class ViagemDto implements Serializable {
 	private Date dataRetorno;
 
 	private String acompanhante;
+	
+	private String regiao;
+
 
 	public ViagemDto() {
 
@@ -70,6 +73,14 @@ public class ViagemDto implements Serializable {
 
 	public void setAcompanhante(String acompanhante) {
 		this.acompanhante = acompanhante;
+	}
+	
+	public String getRegiao() {
+		return regiao;
+	}
+
+	public void setRegiao(String regiao) {
+		this.regiao = regiao;
 	}
 
 	@Override

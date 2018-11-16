@@ -1,20 +1,30 @@
 package com.montanha.gerenciador.services;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.montanha.gerenciador.dtos.ViagemDto;
 import com.montanha.gerenciador.entities.Viagem;
 import com.montanha.gerenciador.repositories.ViagemRepository;
 import com.montanha.gerenciador.services.exceptions.ViagemServiceException;
+
 
 @Service
 public class ViagemServices {
 
 	@Autowired
 	private ViagemRepository viagemRepository;
+	
+	@Autowired
+	private ObjectMapper mapper;
 
 	public List<Viagem> listar() {
 		return viagemRepository.findAll();
@@ -28,11 +38,34 @@ public class ViagemServices {
 		viagem.setDataPartida(viagemDto.getDataPartida());
 		viagem.setDataRetorno(viagemDto.getDataRetorno());
 		viagem.setAcompanhante(viagemDto.getAcompanhante());
+		viagem.setRegiao(viagemDto.getRegiao());
 		return viagemRepository.save(viagem);
 	}
 
-	public Viagem buscar(Long id) {
+	public Viagem buscar(Long id) throws JsonParseException, JsonMappingException, IOException {
 		Viagem viagem = viagemRepository.findOne(id);
+		
+		if (viagem == null) {
+			throw new ViagemServiceException("Não existe esta viagem cadastrada");
+		}
+		
+		String regiao = viagem.getRegiao();
+		
+		if (regiao != null){			
+			final String uri = "http://juliodelima.com.br/tempo-api/temperatura?regiao=" + regiao;
+			//final String uri = "https://demo1588750.mockable.io/tempo-api/temperatura?regiao=Norte";
+			RestTemplate restTemplate = new RestTemplate();
+			String previsaoJson = restTemplate.getForObject(uri, String.class);			
+			ObjectNode node	= mapper.readValue(previsaoJson, ObjectNode.class);
+			viagem.setTemperatura((node.get("data").get("temperatura")).floatValue());
+			
+		}
+
+		return viagem;
+	}
+	
+	public Viagem buscarPorLocalDeDestino(String localDeDestino) {
+		Viagem viagem = viagemRepository.findByLocalDeDestino(localDeDestino);
 
 		if (viagem == null) {
 			throw new ViagemServiceException("Não existe esta viagem cadastrada");
