@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,6 +20,10 @@ import com.montanha.gerenciador.services.exceptions.ViagemServiceException;
 
 @Service
 public class ViagemServices {
+	
+	@Value("${previsaoDoTempoUri}")
+	String previsaoDoTempoUri;
+
 
 	@Autowired
 	private ViagemRepository viagemRepository;
@@ -52,12 +57,13 @@ public class ViagemServices {
 		String regiao = viagem.getRegiao();
 		
 		if (regiao != null){			
-			final String uri = "http://juliodelima.com.br/tempo-api/temperatura?regiao=" + regiao;
-			//final String uri = "https://demo1588750.mockable.io/tempo-api/temperatura?regiao=Norte";
+			final String uri = previsaoDoTempoUri + "tempo-api/temperatura?regiao=" + regiao;			
 			RestTemplate restTemplate = new RestTemplate();
 			String previsaoJson = restTemplate.getForObject(uri, String.class);			
 			ObjectNode node	= mapper.readValue(previsaoJson, ObjectNode.class);
 			viagem.setTemperatura((node.get("data").get("temperatura")).floatValue());
+			
+			System.out.println(previsaoDoTempoUri);
 			
 		}
 
