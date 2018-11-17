@@ -1,19 +1,24 @@
-# gerenciador-viagens
+# Executando a Aplicação
 
-1. Configurar Maven e Java (Variáveis de Ambiente)
+## Instalação
 
-2. Escolha um diretório e abra um Git Bash e Execute: git clone https://github.com/AntonioMontanha/gerenciador-viagens.git
+Baixe e instale o Docker:
+https://www.docker.com/
 
-3. Abra a aplicação na IDE de sua escolha
+## Execute os comandos abaixo
 
-4. No diretorio do projeto execute mvn clean install
-
-5. Acesse a pasta src/main/java abra a package com.montanha.gerenciador e a classe GerenciadorViagensMontanhaApplication
-
-6. Clique com o botão direito e selecione Run as > Java Aplication
-
-# Dockerized
+Buildar a imagem do Gerenciador de Viagens:
 
 docker build -t gerenciador-viagens .
-docker run -tid -p 8089:8089 --name="gerenciador-viagens" -v "${PWD}":/data/gerenciador-viagens gerenciador-viagens
+
+Executar o container do Gerenciador de Viagens:
+
+docker run -tid -p 8089:8089 --name="gerenciador-viagens" -v "${pwd}":/data/gerenciador-viagens gerenciador-viagens
+
+Atenção: Caso esteja em um computador com SO Windows, substitua "${pwd}" pelo caminho onde está a o repositório do Gerenciador de Viagens, veja https://rominirani.com/docker-on-windows-mounting-host-directories-d96f3f056a2c
+
+## Visualização dos Logs da Aplicação
+
+Para visualizar os últimos logs da aplicação, basta executar o comando abaixo:
+
 docker logs gerenciador-viagens
