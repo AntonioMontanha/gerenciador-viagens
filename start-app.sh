@@ -1,3 +1,3 @@
 #!/bin/bash
 
-mvn spring-boot:run
+cd /data/gerenciador-viagens && mvn spring-boot:run
