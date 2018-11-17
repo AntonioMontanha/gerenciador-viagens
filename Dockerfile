@@ -4,9 +4,6 @@ RUN apt-get update
 
 RUN apt-get install git -y
 
-RUN mkdir /data
-RUN git clone https://github.com/AntonioMontanha/gerenciador-viagens.git /data/gerenciador-viagens
-
 RUN chmod +x /data/gerenciador-viagens/start-app.sh
 RUN ls -la /data/gerenciador-viagens
 

@@ -16,3 +16,4 @@
 
 docker build -t gerenciador-viagens .
 docker run -tid -p 8089:8089 --name="gerenciador-viagens" -v "${PWD}":/data/gerenciador-viagens gerenciador-viagens
+docker logs gerenciador-viagens
