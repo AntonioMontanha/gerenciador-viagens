@@ -2,10 +2,8 @@ FROM ubuntu:18.04
 
 RUN apt-get update
 
-RUN apt-get install git -y
-
-RUN mkdir /data
-RUN git clone https://github.com/AntonioMontanha/gerenciador-viagens.git /data/gerenciador-viagens
+COPY . /data/gerenciador-viagens
+WORKDIR /data/gerenciador-viagens
 
 RUN chmod +x /data/gerenciador-viagens/start-app.sh
 RUN ls -la /data/gerenciador-viagens
@@ -19,4 +17,6 @@ RUN apt-get install maven -y
 
 EXPOSE 8089
 
-CMD ./data/gerenciador-viagens/start-app.sh
+RUN ls -la /data/gerenciador-viagens
+
+CMD /data/gerenciador-viagens/start-app.sh
