@@ -60,6 +60,8 @@ public class GerenciadorViagemController {
 		List<Viagem> viagens = viagemService.listar();
 		return ResponseEntity.status(HttpStatus.OK).body(viagens);
 	}
+	
+	
 
 	@GetMapping(path = "/{id}")
 	@PreAuthorize("hasAnyRole('USUARIO')")
