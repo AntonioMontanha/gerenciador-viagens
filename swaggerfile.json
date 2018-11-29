@@ -36,6 +36,8 @@ paths:
       responses:
         200:
           description: "Sucesso"
+          schema:
+            $ref: "#/definitions/AuthResponse"
   /api/viagens:
     post:
       tags:
@@ -186,6 +188,17 @@ definitions:
         type: "string"
       senha:
         type: "string"
+  AuthResponse:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        properties:
+          token:
+            type: "string"
+      errors:
+        type: "array"
+        items: {}
   Viagem:
     type: "object"
     properties:
