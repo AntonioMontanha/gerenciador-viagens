@@ -17,17 +17,15 @@ import com.montanha.gerenciador.entities.Viagem;
 import com.montanha.gerenciador.repositories.ViagemRepository;
 import com.montanha.gerenciador.services.exceptions.ViagemServiceException;
 
-
 @Service
 public class ViagemServices {
-	
+
 	@Value("${previsaoDoTempoUri}")
 	String previsaoDoTempoUri;
 
-
 	@Autowired
 	private ViagemRepository viagemRepository;
-	
+
 	@Autowired
 	private ObjectMapper mapper;
 
@@ -49,27 +47,27 @@ public class ViagemServices {
 
 	public Viagem buscar(Long id) throws JsonParseException, JsonMappingException, IOException {
 		Viagem viagem = viagemRepository.findOne(id);
-		
-		if (viagem == null) {
-			throw new ViagemServiceException("Não existe esta viagem cadastrada");
-		}
-		
+
+//		if (viagem == null) {
+//			throw new ViagemServiceException("Não existe esta viagem cadastrada");
+//		}
+
 		String regiao = viagem.getRegiao();
-		
-		if (regiao != null){			
-			final String uri = previsaoDoTempoUri + "tempo-api/temperatura?regiao=" + regiao;			
+
+		if (regiao != null) {
+			final String uri = previsaoDoTempoUri + "tempo-api/temperatura?regiao=" + regiao;
 			RestTemplate restTemplate = new RestTemplate();
-			String previsaoJson = restTemplate.getForObject(uri, String.class);			
-			ObjectNode node	= mapper.readValue(previsaoJson, ObjectNode.class);
+			String previsaoJson = restTemplate.getForObject(uri, String.class);
+			ObjectNode node = mapper.readValue(previsaoJson, ObjectNode.class);
 			viagem.setTemperatura((node.get("data").get("temperatura")).floatValue());
-			
+
 			System.out.println(previsaoDoTempoUri);
-			
+
 		}
 
 		return viagem;
 	}
-	
+
 	public Viagem buscarPorLocalDeDestino(String localDeDestino) {
 		Viagem viagem = viagemRepository.findByLocalDeDestino(localDeDestino);
 
@@ -78,14 +76,13 @@ public class ViagemServices {
 		}
 		return viagem;
 	}
-	
+
 	public List<Viagem> deletar(Viagem viagem) {
-	
+
 		viagemRepository.delete(viagem);
-		
+
 		return viagemRepository.findAll();
-		
-		
+
 	}
 
 	public Viagem buscarSemTratativa(Long id) {
@@ -93,4 +90,17 @@ public class ViagemServices {
 
 		return viagem;
 	}
+
+	public Viagem alterar(ViagemDto viagemDto, Long id) {
+
+		Viagem viagemExistente = viagemRepository.findOne(id);
+
+		viagemExistente.setLocalDeDestino(viagemDto.getLocalDeDestino());
+		viagemExistente.setDataPartida(viagemDto.getDataPartida());
+		viagemExistente.setDataRetorno(viagemDto.getDataRetorno());
+		viagemExistente.setAcompanhante(viagemDto.getAcompanhante());
+		viagemExistente.setRegiao(viagemDto.getRegiao());
+		return viagemRepository.save(viagemExistente);
+	}
+
 }

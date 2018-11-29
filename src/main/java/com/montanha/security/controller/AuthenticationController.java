@@ -29,7 +29,7 @@ import com.montanha.gerenciador.dtos.TokenDto;
 import com.montanha.security.utils.JwtTokenUtil;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 @CrossOrigin(origins = "*")
 public class AuthenticationController {
 
