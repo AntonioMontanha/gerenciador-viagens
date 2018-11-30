@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +29,7 @@ import com.montanha.gerenciador.responses.Response;
 import com.montanha.gerenciador.services.ViagemServices;
 
 @RestController
-@RequestMapping("/api/viagens")
+@RequestMapping("/api/viagem")
 
 public class GerenciadorViagemController {
 
@@ -36,7 +37,7 @@ public class GerenciadorViagemController {
 	private ViagemServices viagemService;
 
 	
-	@PostMapping(path = "/new")
+	@PostMapping()
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Response<Viagem>> cadastrar(@Valid @RequestBody ViagemDto viagemDto, BindingResult result) {
 		Response<Viagem> response = new Response<Viagem>();
@@ -93,6 +94,19 @@ public class GerenciadorViagemController {
 		List<Viagem> viagens = viagemService.deletar(viagem);
 
 		return ResponseEntity.status(HttpStatus.OK).body(viagens);
+	}
+	
+	@PutMapping(path = "/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Response<Viagem>> alterar(@PathVariable("id") Long id,@Valid @RequestBody ViagemDto viagemDto) throws JsonParseException, JsonMappingException, IOException {
+		
+		
+		Viagem viagem = this.viagemService.alterar(viagemDto, id);
+		
+		Response<Viagem> response = new Response<Viagem>();
+		response.setData(viagem);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 	
 

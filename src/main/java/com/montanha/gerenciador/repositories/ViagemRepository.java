@@ -9,5 +9,6 @@ import com.montanha.gerenciador.entities.Viagem;
 public interface ViagemRepository extends JpaRepository<Viagem, Long> {
 
 	Viagem findByLocalDeDestino(String localDeDestino);
+	
 
 }
