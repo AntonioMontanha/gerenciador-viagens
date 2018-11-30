@@ -212,6 +212,8 @@ definitions:
         format: "full-date"
       acompanhante:
         type: "string"
+      regiao:
+        type: "string"
   ViagemResponse:
     type: "object"
     properties:
