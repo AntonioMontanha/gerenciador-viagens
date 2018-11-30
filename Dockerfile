@@ -19,4 +19,4 @@ EXPOSE 8089
 
 RUN ls -la /data/gerenciador-viagens
 
-CMD /data/gerenciador-viagens/start-app.sh
+CMD [ "bash", "/data/gerenciador-viagens/start-app.sh" ]
