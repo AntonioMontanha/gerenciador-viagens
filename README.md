@@ -13,7 +13,9 @@ docker build -t gerenciador-viagens .
 
 Executar o container do Gerenciador de Viagens:
 
-docker run -tid -p 8089:8089 --name="gerenciador-viagens" -v "${pwd}":/data/gerenciador-viagens gerenciador-viagens
+docker run -tid -p 8089:8089 --name="gerenciador-viagens" -v C:/Temp/projects/gerenciador-viagens:/data/gerenciador-viagens gerenciador-viagens
+
+Em sistemas operacionais Unix, altere o caminho C:/Temp/projects/gerenciador-viagens pelo diretório de seu projeto.
 
 Atenção: Caso esteja em um computador com SO Windows, substitua "${pwd}" pelo caminho onde está a o repositório do Gerenciador de Viagens, veja https://rominirani.com/docker-on-windows-mounting-host-directories-d96f3f056a2c
 
