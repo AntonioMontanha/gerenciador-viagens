@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "Encontre aqui toda a documentação referente a API Gerenciador de Viagens de Antonio Montanha"
+  description: "Encontre aqui toda a documentação referente a API Gerenciador de Viagem de Antonio Montanha"
   version: "1.0.0"
   title: "Gerenciador de Viagens"
   termsOfService: "https://github.com/AntonioMontanha/gerenciador-viagens"
@@ -17,7 +17,7 @@ tags:
 schemes:
 - "http"
 paths:
-  /auth:
+  auth:
     post:
       tags:
       - "auth"
@@ -38,17 +38,17 @@ paths:
           description: "Sucesso"
           schema:
             $ref: "#/definitions/AuthResponse"
-  /api/viagens:
+  /api/viagem:
     post:
       tags:
-      - "viagens"
+      - "viagem"
       summary: "Inserir uma nova viagem"
       description: "Inserir uma nova viagem que será utilizada pelo sistema"
       operationId: "post_viagem"
       produces:
       - "application/json"
       parameters:
-      - name: "Authentication"
+      - name: "Authorization"
         in: "header"
         description: "Token para autenticação"
         required: true
@@ -70,14 +70,14 @@ paths:
             $ref: '#/definitions/ErroResponse'
     get:
       tags:
-      - "viagens"
-      summary: "Procurar viagens"
-      description: "Retorna uma lista de viagens"
-      operationId: "getViagens"
+      - "viagem"
+      summary: "Procurar viagem"
+      description: "Retorna uma lista de viagem"
+      operationId: "getViagem"
       produces:
       - "application/json"
       parameters:
-      - name: "Authentication"
+      - name: "Authorization"
         in: "header"
         description: "Token para autenticação"
         required: true
@@ -87,17 +87,17 @@ paths:
           description: "Sucesso"
           schema:
             $ref: "#/definitions/ListaViagemResponse"
-  /api/viagens/{viagemId}:
+  /api/viagem/{viagemId}:
     get:
       tags:
-      - "viagens"
+      - "viagem"
       summary: "Procurar uma viagem pelo ID"
       description: "Retorna uma única viagem"
       operationId: "getViagemPeloID"
       produces:
       - "application/json"
       parameters:
-      - name: "Authentication"
+      - name: "Authorization"
         in: "header"
         description: "Token para autenticação"
         required: true
@@ -119,14 +119,14 @@ paths:
           description: "Viagem não encontrada"
     put:
       tags:
-      - "viagens"
+      - "viagem"
       summary: "Alterar uma viagem"
       description: "Alterar uma viagem"
       operationId: "update_viagem"
       produces:
       - "application/json"
       parameters:
-      - name: "Authentication"
+      - name: "Authorization"
         in: "header"
         description: "Token para autenticação"
         required: true
@@ -154,14 +154,14 @@ paths:
             $ref: '#/definitions/ErroResponse'
     delete:
       tags:
-      - "viagens"
+      - "viagem"
       summary: "Remover uma viagem pelo ID"
       description: "Remove uma única viagem"
       operationId: "deleteViagemPeloID"
       produces:
       - "application/json"
       parameters:
-      - name: "Authentication"
+      - name: "Authorization"
         in: "header"
         description: "Token para autenticação"
         required: true
