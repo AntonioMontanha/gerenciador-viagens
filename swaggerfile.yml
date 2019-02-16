@@ -17,7 +17,7 @@ tags:
 schemes:
 - "http"
 paths:
-  auth:
+  /api/auth:
     post:
       tags:
       - "auth"
@@ -81,6 +81,11 @@ paths:
         in: "header"
         description: "Token para autenticação"
         required: true
+        type: "string"
+      - name: "localDeDestino"
+        in: query
+        description: "Filtro para busca de viagens por sua localização"
+        required: false
         type: "string"
       responses:
         200:
