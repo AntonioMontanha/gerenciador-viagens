@@ -76,17 +76,17 @@ public class GerenciadorViagemController {
 	}
 	
 	
-	@GetMapping(path = "buscarPorLocal/{localDeDestino}")
-	@PreAuthorize("hasAnyRole('USUARIO')")
-	public ResponseEntity<Response<Viagem>> buscarPorLocalDestino(@PathVariable("localDeDestino") String localDeDestino) {
-		
-		Viagem viagem = viagemService.buscarPorLocalDeDestino(localDeDestino);
-		Response<Viagem> response = new Response<Viagem>();
-		response.setData(viagem);
-		return ResponseEntity.status(HttpStatus.OK).body(response);
-	}
+//	@GetMapping(path = "/{localDeDestino}")
+//	@PreAuthorize("hasAnyRole('USUARIO')")
+//	public ResponseEntity<Response<Viagem>> buscarPorLocalDestino(@PathVariable("localDeDestino") String localDeDestino) {
+//		
+//		Viagem viagem = viagemService.buscarPorLocalDeDestino(localDeDestino);
+//		Response<Viagem> response = new Response<Viagem>();
+//		response.setData(viagem);
+//		return ResponseEntity.status(HttpStatus.OK).body(response);
+//	}
 	
-	@DeleteMapping(path = "/delete/{id}")
+	@DeleteMapping(path = "/{id}")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<List<Viagem>> delete(@PathVariable("id") Long id) {
 		
