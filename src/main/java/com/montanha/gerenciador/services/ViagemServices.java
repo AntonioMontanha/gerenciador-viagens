@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -48,16 +49,24 @@ public class ViagemServices {
 	public Viagem buscar(Long id) throws JsonParseException, JsonMappingException, IOException {
 		Viagem viagem = viagemRepository.findOne(id);
 
-//		if (viagem == null) {
-//			throw new ViagemServiceException("Não existe esta viagem cadastrada");
-//		}
+		if (viagem == null) {
+			throw new ViagemServiceException("Não existe esta viagem cadastrada");
+		}
 
 		String regiao = viagem.getRegiao();
 
 		if (regiao != null) {
 			final String uri = previsaoDoTempoUri + "tempo-api/temperatura?regiao=" + regiao;
 			RestTemplate restTemplate = new RestTemplate();
-			String previsaoJson = restTemplate.getForObject(uri, String.class);
+
+			String previsaoJson = "";
+
+			try {
+				previsaoJson = restTemplate.getForObject(uri, String.class);
+			} catch (HttpClientErrorException hcee) {
+				throw new ViagemServiceException("A API do Tempo não está online");
+			}
+
 			ObjectNode node = mapper.readValue(previsaoJson, ObjectNode.class);
 			viagem.setTemperatura((node.get("data").get("temperatura")).floatValue());
 
@@ -75,6 +84,15 @@ public class ViagemServices {
 			throw new ViagemServiceException("Não existe esta viagem cadastrada");
 		}
 		return viagem;
+	}
+
+	public List<Viagem> buscarViagensPorLocalDeDestino(String localDeDestino) {
+		List<Viagem> viagens = viagemRepository.findAllByLocalDeDestino(localDeDestino);
+
+		if (viagens.isEmpty()) {
+			throw new ViagemServiceException("Não existem viagens cadastradas");
+		}
+		return viagens;
 	}
 
 	public List<Viagem> deletar(Viagem viagem) {

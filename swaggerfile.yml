@@ -1,0 +1,262 @@
+swagger: "2.0"
+info:
+  description: "Encontre aqui toda a documentação referente a API Gerenciador de Viagem de Antonio Montanha"
+  version: "1.0.0"
+  title: "Gerenciador de Viagens"
+  termsOfService: "https://github.com/AntonioMontanha/gerenciador-viagens"
+  contact:
+    email: "ammontanha@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8089"
+basePath: "/"
+tags:
+- name: "auth"
+  description: "Mecanismos de autenticação"
+schemes:
+- "http"
+paths:
+  /api/auth:
+    post:
+      tags:
+      - "auth"
+      summary: "Logar como Usuário ou Administrador"
+      description: "Através deste endpoint podemos fazer login para capturar o token e utilizar a API"
+      operationId: "authenticacao"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Dados para fazer login"
+        required: true
+        schema:
+          $ref: "#/definitions/Auth"
+      responses:
+        200:
+          description: "Sucesso"
+          schema:
+            $ref: "#/definitions/AuthResponse"
+  /api/viagem:
+    post:
+      tags:
+      - "viagem"
+      summary: "Inserir uma nova viagem"
+      description: "Inserir uma nova viagem que será utilizada pelo sistema"
+      operationId: "post_viagem"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "Token para autenticação"
+        required: true
+        type: "string"
+      - name: "body"
+        in: "body"
+        description: "Dados para fazer login"
+        required: true
+        schema:
+          $ref: "#/definitions/Viagem"
+      responses:
+        201:
+          description: "Sucesso"
+          schema:
+            $ref: '#/definitions/ViagemResponse'
+        400:
+          description: "Erros de negócio"
+          schema:
+            $ref: '#/definitions/ErroResponse'
+    get:
+      tags:
+      - "viagem"
+      summary: "Procurar viagem"
+      description: "Retorna uma lista de viagem"
+      operationId: "getViagem"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "Token para autenticação"
+        required: true
+        type: "string"
+      - name: "localDeDestino"
+        in: query
+        description: "Filtro para busca de viagens por sua localização"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Sucesso"
+          schema:
+            $ref: "#/definitions/ListaViagemResponse"
+  /api/viagem/{viagemId}:
+    get:
+      tags:
+      - "viagem"
+      summary: "Procurar uma viagem pelo ID"
+      description: "Retorna uma única viagem"
+      operationId: "getViagemPeloID"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "Token para autenticação"
+        required: true
+        type: "string"
+      - name: "viagemId"
+        in: "path"
+        description: "ID de uma viagem"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "Sucesso"
+          schema:
+            $ref: "#/definitions/ViagemResponse"
+        400:
+          description: "ID inválido"
+        404:
+          description: "Viagem não encontrada"
+    put:
+      tags:
+      - "viagem"
+      summary: "Alterar uma viagem"
+      description: "Alterar uma viagem"
+      operationId: "update_viagem"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "Token para autenticação"
+        required: true
+        type: "string"
+      - name: "viagemId"
+        in: "path"
+        description: "ID de uma viagem"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "body"
+        in: "body"
+        description: "Dados para fazer login"
+        required: true
+        schema:
+          $ref: "#/definitions/Viagem"
+      responses:
+        200:
+          description: "Sucesso"
+          schema:
+            $ref: '#/definitions/ViagemResponse'
+        400:
+          description: "Erros de negócio"
+          schema:
+            $ref: '#/definitions/ErroResponse'
+    delete:
+      tags:
+      - "viagem"
+      summary: "Remover uma viagem pelo ID"
+      description: "Remove uma única viagem"
+      operationId: "deleteViagemPeloID"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "Token para autenticação"
+        required: true
+        type: "string"
+      - name: "viagemId"
+        in: "path"
+        description: "ID de uma viagem"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        204:
+          description: "Sucesso"
+        400:
+          description: "ID inválido"
+        404:
+          description: "Viagem não encontrada"
+
+definitions:
+  Auth:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+      senha:
+        type: "string"
+  AuthResponse:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        properties:
+          token:
+            type: "string"
+      errors:
+        type: "array"
+        items: {}
+  Viagem:
+    type: "object"
+    properties:
+      localDeDestino:
+        type: "string"
+      dataPartida:
+        type: "string"
+        format: "full-date"
+      dataRetorno:
+        type: "string"
+        format: "full-date"
+      acompanhante:
+        type: "string"
+      regiao:
+        type: "string"
+  ViagemResponse:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        properties:
+          id:
+            type: "integer"
+          localDeDestino:
+            type: "string"
+          dataPartida:
+            type: "string"
+            format: "full-date"
+          dataRetorno:
+            type: "string"
+            format: "full-date"
+          acompanhante:
+            type: "string"
+          regiao:
+            type: "string"
+          temperatura:
+            type: "number"
+      errors:
+        type: "array"
+        items: {}
+  ListaViagemResponse:
+    type: "array"
+    items: {
+      $ref: "#/definitions/ViagemResponse"
+    }
+  ErroResponse:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+      errors:
+        type: "array"
+        items: {}
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
