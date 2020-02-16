@@ -16,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Component
 @Table(name = "viagem")
@@ -25,25 +27,32 @@ public class Viagem implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@ApiModelProperty(value = "Id da viagem")
 	private Long id;
 
 	@Column(name = "local_destino", nullable = false)
+	@ApiModelProperty(value = "Local de destino da viagem")
 	private String localDeDestino;
 
 	@JsonSerialize(using = DateSerializer.class)
 	@Column(name = "data_partida", nullable = false)
+	@ApiModelProperty(value = "Data de partida da viagem")
 	private Date dataPartida;
 
 	@JsonSerialize(using = DateSerializer.class)
+	@ApiModelProperty(value = "Data de retorno da viagem")
 	@Column(name = "data_retorno", nullable = true)
 	private Date dataRetorno;
 
 	@Column(name = "acompanhante", nullable = true)
+	@ApiModelProperty(value = "Nome do acompanhante da viagem")
 	private String acompanhante;
 	
 	@Column(name = "regiao", nullable = true)
+	@ApiModelProperty(value = "Região de destino da viagem [Norte, Sul, Leste, Oeste]")
 	private String regiao;
 	
+	@ApiModelProperty(value = "Temperatura prevista da região de destino")
 	private float temperatura;
 
 	public Viagem() {

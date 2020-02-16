@@ -9,22 +9,30 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class ViagemDto implements Serializable {
 
 	private static final long serialVersionUID = -8105241933692707649L;
 
+	@ApiModelProperty(value = "Id da viagem")
 	private Long id;
 
+	@ApiModelProperty(value = "Local de destino da viagem")
 	private String localDeDestino;
 
+	@ApiModelProperty(value = "Data de partida da viagem")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date dataPartida;
 
+	@ApiModelProperty(value = "Data de retorno da viagem")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date dataRetorno;
 
+	@ApiModelProperty(value = "Nome do acompanhante da viagem")
 	private String acompanhante;
 	
+	@ApiModelProperty(value = "Região de destino da viagem [Norte, Sul, Leste, Oeste]")
 	private String regiao;
 
 

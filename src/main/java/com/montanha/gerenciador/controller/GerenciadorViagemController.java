@@ -21,18 +21,20 @@ import com.montanha.gerenciador.entities.Viagem;
 import com.montanha.gerenciador.responses.Response;
 import com.montanha.gerenciador.services.ViagemServices;
 
-@RestController
-@RequestMapping("/api/viagem")
+import io.swagger.annotations.ApiOperation;
 
+@RestController
 public class GerenciadorViagemController {
 
 	@Autowired
 	private ViagemServices viagemService;
 
-	
-	@PostMapping()
-	@PreAuthorize("hasAnyRole('ADMIN')")
-	public ResponseEntity<Response<Viagem>> cadastrar(@Valid @RequestBody ViagemDto viagemDto, BindingResult result) {
+	@ApiOperation(value = "Cadastra uma viagem")
+	@PreAuthorize("hasAnyRole('ADMIN')")	
+	@RequestMapping(value = "/api/viagem", method = RequestMethod.POST, produces = "application/json" )
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<Response<Viagem>> cadastrar(@Valid @RequestBody ViagemDto viagemRequest, BindingResult result) {
+		// Não devemos expor entidades na resposta.
 		Response<Viagem> response = new Response<Viagem>();
 
 		if (result.hasErrors()) {
@@ -40,15 +42,16 @@ public class GerenciadorViagemController {
 			return ResponseEntity.badRequest().body(response);
 		}
 
-		Viagem viagemSalva = this.viagemService.salvar(viagemDto);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(viagemDto.getId())
+		Viagem viagemSalva = this.viagemService.salvar(viagemRequest);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(viagemRequest.getId())
 				.toUri();
 
 		response.setData(viagemSalva);
 		return ResponseEntity.created(location).body(response);
 	}
 
-	@GetMapping
+	@ApiOperation(value = "Retorna todas as viagens")
+	@RequestMapping(value = "/api/viagem", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasAnyRole('USUARIO')")
 	public ResponseEntity<List<Viagem>> listar(@RequestParam(value = "localDeDestino", required = false) String localDeDestino) {
 		List<Viagem> viagens = null;
@@ -62,8 +65,8 @@ public class GerenciadorViagemController {
 		return ResponseEntity.status(HttpStatus.OK).body(viagens);
 	}
 	
-
-	@GetMapping(path = "/{id}")
+	@ApiOperation(value = "Retorna uma viagem específica")
+	@RequestMapping(value = "/api/viagem/{id}", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasAnyRole('USUARIO')")
 	public ResponseEntity<Response<Viagem>> buscar(@PathVariable("id") Long id) throws JsonParseException, JsonMappingException, IOException {
 		
@@ -85,7 +88,8 @@ public class GerenciadorViagemController {
 //		return ResponseEntity.status(HttpStatus.OK).body(response);
 //	}
 	
-	@DeleteMapping(path = "/{id}")
+	@ApiOperation(value = "Apaga uma viagem específica")
+	@RequestMapping(value = "/api/viagem/{id}", method = RequestMethod.DELETE, produces = "application/json")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<List<Viagem>> delete(@PathVariable("id") Long id) {
 		
@@ -95,7 +99,8 @@ public class GerenciadorViagemController {
 		return ResponseEntity.status(HttpStatus.OK).body(viagens);
 	}
 	
-	@PutMapping(path = "/{id}")
+	@ApiOperation(value = "Atualiza uma viagem específica")
+	@RequestMapping(value = "/api/viagem/{id}", method = RequestMethod.PUT, produces = "application/json")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Response<Viagem>> alterar(@PathVariable("id") Long id,@Valid @RequestBody ViagemDto viagemDto) throws JsonParseException, JsonMappingException, IOException {
 		
