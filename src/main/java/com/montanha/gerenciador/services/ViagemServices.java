@@ -86,11 +86,11 @@ public class ViagemServices {
 		return viagem;
 	}
 
-	public List<Viagem> buscarViagensPorLocalDeDestino(String localDeDestino) {
-		List<Viagem> viagens = viagemRepository.findAllByLocalDeDestino(localDeDestino);
+	public List<Viagem> buscarViagensPorRegiao(String regiao) {
+		List<Viagem> viagens = viagemRepository.findAllByRegiao(regiao);
 
 		if (viagens.isEmpty()) {
-			throw new ViagemServiceException("Não existem viagens cadastradas");
+			throw new ViagemServiceException("Não existem viagens cadastradas para esta Região");
 		}
 		return viagens;
 	}

@@ -53,13 +53,13 @@ public class GerenciadorViagemController {
 	@ApiOperation(value = "Retorna todas as viagens")
 	@RequestMapping(value = "/api/viagem", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasAnyRole('USUARIO')")
-	public ResponseEntity<List<Viagem>> listar(@RequestParam(value = "localDeDestino", required = false) String localDeDestino) {
+	public ResponseEntity<List<Viagem>> listar(@RequestParam(value = "regiao", required = false) String regiao) {
 		List<Viagem> viagens = null;
 
-		if (localDeDestino == null) {
+		if (regiao == null) {
 			viagens = viagemService.listar();
 		} else {
-			viagens = viagemService.buscarViagensPorLocalDeDestino(localDeDestino);
+			viagens = viagemService.buscarViagensPorRegiao(regiao);
 		}
 
 		return ResponseEntity.status(HttpStatus.OK).body(viagens);
@@ -76,18 +76,7 @@ public class GerenciadorViagemController {
 		
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
-	
-	
-//	@GetMapping(path = "/{localDeDestino}")
-//	@PreAuthorize("hasAnyRole('USUARIO')")
-//	public ResponseEntity<Response<Viagem>> buscarPorLocalDestino(@PathVariable("localDeDestino") String localDeDestino) {
-//		
-//		Viagem viagem = viagemService.buscarPorLocalDeDestino(localDeDestino);
-//		Response<Viagem> response = new Response<Viagem>();
-//		response.setData(viagem);
-//		return ResponseEntity.status(HttpStatus.OK).body(response);
-//	}
-	
+
 	@ApiOperation(value = "Apaga uma viagem específica")
 	@RequestMapping(value = "/api/viagem/{id}", method = RequestMethod.DELETE, produces = "application/json")
 	@PreAuthorize("hasAnyRole('ADMIN')")

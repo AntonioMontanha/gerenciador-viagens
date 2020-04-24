@@ -12,7 +12,7 @@ public interface ViagemRepository extends JpaRepository<Viagem, Long> {
 
 	Viagem findByLocalDeDestino(String localDeDestino);
 
-	List<Viagem> findAllByLocalDeDestino(String localDeDestino);
+	List<Viagem> findAllByRegiao(String regiao);
 	
 
 }
