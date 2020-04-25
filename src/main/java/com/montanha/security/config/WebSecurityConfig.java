@@ -61,11 +61,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers("/api/auth/**","/api/status/**","/swagger-ui/**").permitAll().anyRequest().authenticated();
+				.antMatchers("/api/auth/**","/api/status/**","/swagger-ui.html","/webjars/**", "/v2/api-docs/**", "/v2/api-docs", "/swagger-resources/**", "/swagger-resources" ).permitAll().anyRequest().authenticated();
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 		httpSecurity.headers().cacheControl();
-	
+
 	}
+
+//
+//	@Override
+//	protected void configure(HttpSecurity httpSecurity) throws Exception {
+//		httpSecurity.csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+//				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+//				.antMatchers("/**").permitAll().anyRequest().authenticated();
+//		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+//		httpSecurity.headers().cacheControl();
+//
+//	}
 	
 	
 }

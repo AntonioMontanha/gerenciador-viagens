@@ -15,8 +15,7 @@ public class ViagemDto implements Serializable {
 
 	private static final long serialVersionUID = -8105241933692707649L;
 
-	@ApiModelProperty(value = "Id da viagem")
-	private Long id;
+
 
 	@ApiModelProperty(value = "Local de destino da viagem")
 	private String localDeDestino;
@@ -38,14 +37,6 @@ public class ViagemDto implements Serializable {
 
 	public ViagemDto() {
 
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	@NotNull(message = "Local de Destino é uma informação obrigatória")
@@ -93,7 +84,7 @@ public class ViagemDto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ViagemDto [id=" + id + ", localDeDestino=" + localDeDestino + ", dataPartida=" + dataPartida
+		return "ViagemDto [id=" + ", localDeDestino=" + localDeDestino + ", dataPartida=" + dataPartida
 				+ ", dataRetorno=" + dataRetorno + ", acompanhante=" + acompanhante + "]";
 	}
 }

@@ -38,7 +38,7 @@ public class GerenciadorViagensMontanhaApplication {
 			Usuario admin = new Usuario();
 			admin.setEmail("admin@email.com");
 			admin.setPerfil(PerfilEnum.ROLE_ADMIN);
-			admin.setSenha(SenhaUtils.gerarBCrypt("123456"));
+			admin.setSenha(SenhaUtils.gerarBCrypt("654321"));
 			this.usuarioRepository.save(admin);
 			
 		};

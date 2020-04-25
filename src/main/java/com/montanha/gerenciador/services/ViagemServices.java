@@ -3,6 +3,7 @@ package com.montanha.gerenciador.services;
 import java.io.IOException;
 import java.util.List;
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ import com.montanha.gerenciador.dtos.ViagemDto;
 import com.montanha.gerenciador.entities.Viagem;
 import com.montanha.gerenciador.repositories.ViagemRepository;
 import com.montanha.gerenciador.services.exceptions.ViagemServiceException;
+
+import static java.lang.String.format;
 
 @Service
 public class ViagemServices {
@@ -46,13 +49,13 @@ public class ViagemServices {
 		return viagemRepository.save(viagem);
 	}
 
-	public Viagem buscar(Long id) throws JsonParseException, JsonMappingException, IOException {
+	public Viagem buscar(Long id) throws JsonParseException, JsonMappingException, IOException, NotFoundException {
 		Viagem viagem = viagemRepository.findOne(id);
 
 		if (viagem == null) {
-			throw new ViagemServiceException("Não existe esta viagem cadastrada");
-		}
+			throw new NotFoundException(format("Viagem com id: [%s] não encontrada", id));
 
+		}
 		String regiao = viagem.getRegiao();
 
 		if (regiao != null) {
@@ -83,9 +86,11 @@ public class ViagemServices {
 		if (viagem == null) {
 			throw new ViagemServiceException("Não existe esta viagem cadastrada");
 		}
+
 		return viagem;
 	}
 
+	// Erro 500 porém com mensagem tratada.
 	public List<Viagem> buscarViagensPorRegiao(String regiao) {
 		List<Viagem> viagens = viagemRepository.findAllByRegiao(regiao);
 

@@ -2,10 +2,13 @@ package com.montanha.gerenciador.controller;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.Api;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,7 @@ import com.montanha.gerenciador.services.ViagemServices;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
+@Api("GerenciadorViagensController")
 public class GerenciadorViagemController {
 
 	@Autowired
@@ -33,7 +37,8 @@ public class GerenciadorViagemController {
 	@PreAuthorize("hasAnyRole('ADMIN')")	
 	@RequestMapping(value = "/api/viagem", method = RequestMethod.POST, produces = "application/json" )
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Response<Viagem>> cadastrar(@Valid @RequestBody ViagemDto viagemRequest, BindingResult result) {
+	public ResponseEntity<Response<Viagem>> cadastrar(@Valid @RequestBody ViagemDto viagemRequest, @RequestHeader String Authorization, BindingResult result) {
+
 		// Não devemos expor entidades na resposta.
 		Response<Viagem> response = new Response<Viagem>();
 
@@ -43,7 +48,7 @@ public class GerenciadorViagemController {
 		}
 
 		Viagem viagemSalva = this.viagemService.salvar(viagemRequest);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(viagemRequest.getId())
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(viagemSalva.getId())
 				.toUri();
 
 		response.setData(viagemSalva);
@@ -53,7 +58,7 @@ public class GerenciadorViagemController {
 	@ApiOperation(value = "Retorna todas as viagens")
 	@RequestMapping(value = "/api/viagem", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasAnyRole('USUARIO')")
-	public ResponseEntity<List<Viagem>> listar(@RequestParam(value = "regiao", required = false) String regiao) {
+	public ResponseEntity<Response<List<Viagem>>> listar(@RequestParam(value = "regiao", required = false) String regiao, @RequestHeader String Authorization) {
 		List<Viagem> viagens = null;
 
 		if (regiao == null) {
@@ -62,16 +67,25 @@ public class GerenciadorViagemController {
 			viagens = viagemService.buscarViagensPorRegiao(regiao);
 		}
 
-		return ResponseEntity.status(HttpStatus.OK).body(viagens);
+		Response<List<Viagem>> viagensResponse = new Response<>();
+		viagensResponse.setData(viagens);
+		return ResponseEntity.status(HttpStatus.OK).body(viagensResponse);
 	}
-	
+
 	@ApiOperation(value = "Retorna uma viagem específica")
 	@RequestMapping(value = "/api/viagem/{id}", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasAnyRole('USUARIO')")
-	public ResponseEntity<Response<Viagem>> buscar(@PathVariable("id") Long id) throws JsonParseException, JsonMappingException, IOException {
-		
-		Viagem viagem = viagemService.buscar(id);
+	public ResponseEntity<Response<Viagem>> buscar(@PathVariable("id") Long id, @RequestHeader String Authorization) throws  IOException {
 		Response<Viagem> response = new Response<Viagem>();
+		Viagem viagem;
+		try {
+			viagem = viagemService.buscar(id);
+
+		} catch (NotFoundException e) {
+			response.setErrors(Collections.singletonList(e.getMessage()));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		}
+
 		response.setData(viagem);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -80,26 +94,25 @@ public class GerenciadorViagemController {
 	@ApiOperation(value = "Apaga uma viagem específica")
 	@RequestMapping(value = "/api/viagem/{id}", method = RequestMethod.DELETE, produces = "application/json")
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	public ResponseEntity<List<Viagem>> delete(@PathVariable("id") Long id) {
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void delete(@PathVariable("id") Long id, @RequestHeader String Authorization) {
 		
 		Viagem viagem = viagemService.buscarSemTratativa(id);
-		List<Viagem> viagens = viagemService.deletar(viagem);
+		viagemService.deletar(viagem);
 
-		return ResponseEntity.status(HttpStatus.OK).body(viagens);
 	}
 	
 	@ApiOperation(value = "Atualiza uma viagem específica")
 	@RequestMapping(value = "/api/viagem/{id}", method = RequestMethod.PUT, produces = "application/json")
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	public ResponseEntity<Response<Viagem>> alterar(@PathVariable("id") Long id,@Valid @RequestBody ViagemDto viagemDto) throws JsonParseException, JsonMappingException, IOException {
+	public ResponseEntity<Response<Viagem>> alterar(@PathVariable("id") Long id,@Valid @RequestBody ViagemDto viagemDto, @RequestHeader String Authorization) {
 		
 		
 		Viagem viagem = this.viagemService.alterar(viagemDto, id);
 		
 		Response<Viagem> response = new Response<Viagem>();
-		response.setData(viagem);
 		
-		return ResponseEntity.status(HttpStatus.OK).body(response);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
 	}
 	
 
