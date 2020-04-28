@@ -35,7 +35,7 @@ public class GerenciadorViagemController {
 
 	@ApiOperation(value = "Cadastra uma viagem")
 	@PreAuthorize("hasAnyRole('ADMIN')")	
-	@RequestMapping(value = "/api/viagem", method = RequestMethod.POST, produces = "application/json" )
+	@RequestMapping(value = "v1/api/viagem", method = RequestMethod.POST, produces = "application/json" )
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Response<Viagem>> cadastrar(@Valid @RequestBody ViagemDto viagemRequest, @RequestHeader String Authorization, BindingResult result) {
 
@@ -56,7 +56,7 @@ public class GerenciadorViagemController {
 	}
 
 	@ApiOperation(value = "Retorna todas as viagens")
-	@RequestMapping(value = "/api/viagem", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "v1/api/viagem", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasAnyRole('USUARIO')")
 	public ResponseEntity<Response<List<Viagem>>> listar(@RequestParam(value = "regiao", required = false) String regiao, @RequestHeader String Authorization) {
 		List<Viagem> viagens = null;
@@ -73,7 +73,7 @@ public class GerenciadorViagemController {
 	}
 
 	@ApiOperation(value = "Retorna uma viagem específica")
-	@RequestMapping(value = "/api/viagem/{id}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "v1/api/viagem/{id}", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasAnyRole('USUARIO')")
 	public ResponseEntity<Response<Viagem>> buscar(@PathVariable("id") Long id, @RequestHeader String Authorization) throws  IOException {
 		Response<Viagem> response = new Response<Viagem>();
@@ -92,7 +92,7 @@ public class GerenciadorViagemController {
 	}
 
 	@ApiOperation(value = "Apaga uma viagem específica")
-	@RequestMapping(value = "/api/viagem/{id}", method = RequestMethod.DELETE, produces = "application/json")
+	@RequestMapping(value = "v1/api/viagem/{id}", method = RequestMethod.DELETE, produces = "application/json")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable("id") Long id, @RequestHeader String Authorization) {
@@ -103,7 +103,7 @@ public class GerenciadorViagemController {
 	}
 	
 	@ApiOperation(value = "Atualiza uma viagem específica")
-	@RequestMapping(value = "/api/viagem/{id}", method = RequestMethod.PUT, produces = "application/json")
+	@RequestMapping(value = "v1/api/viagem/{id}", method = RequestMethod.PUT, produces = "application/json")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Response<Viagem>> alterar(@PathVariable("id") Long id,@Valid @RequestBody ViagemDto viagemDto, @RequestHeader String Authorization) {
 		
