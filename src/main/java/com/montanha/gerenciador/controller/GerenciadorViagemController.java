@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.montanha.gerenciador.dtos.ViagemDtoResponse;
+import com.montanha.gerenciador.utils.Conversor;
 import io.swagger.annotations.Api;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,7 @@ public class GerenciadorViagemController {
 	@PreAuthorize("hasAnyRole('ADMIN')")	
 	@RequestMapping(value = "v1/api/viagem", method = RequestMethod.POST, produces = "application/json" )
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Response<Viagem>> cadastrar(@Valid @RequestBody ViagemDto viagemRequest, @RequestHeader String Authorization, BindingResult result) {
+	public ResponseEntity<Response<Viagem>> cadastrar(@Valid @RequestBody ViagemDto viagemDto, @RequestHeader String Authorization, BindingResult result) {
 
 		// Não devemos expor entidades na resposta.
 		Response<Viagem> response = new Response<Viagem>();
@@ -47,7 +49,7 @@ public class GerenciadorViagemController {
 			return ResponseEntity.badRequest().body(response);
 		}
 
-		Viagem viagemSalva = this.viagemService.salvar(viagemRequest);
+		Viagem viagemSalva = this.viagemService.salvar(viagemDto);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(viagemSalva.getId())
 				.toUri();
 
@@ -75,8 +77,8 @@ public class GerenciadorViagemController {
 	@ApiOperation(value = "Retorna uma viagem específica")
 	@RequestMapping(value = "v1/api/viagem/{id}", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasAnyRole('USUARIO')")
-	public ResponseEntity<Response<Viagem>> buscar(@PathVariable("id") Long id, @RequestHeader String Authorization) throws  IOException {
-		Response<Viagem> response = new Response<Viagem>();
+	public ResponseEntity<Response<ViagemDtoResponse>> buscar(@PathVariable("id") Long id, @RequestHeader String Authorization) throws  IOException {
+		Response<ViagemDtoResponse> response = new Response<ViagemDtoResponse>();
 		Viagem viagem;
 		try {
 			viagem = viagemService.buscar(id);
@@ -86,10 +88,14 @@ public class GerenciadorViagemController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 
-		response.setData(viagem);
+		// exemplo de não expondo a entidade na resposta, mas o método deveria estar na service.
+		ViagemDtoResponse viagemDtoResponse = Conversor.converterViagemToViagemDtoResponse(viagem);
+		response.setData(viagemDtoResponse);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
+
+
 
 	@ApiOperation(value = "Apaga uma viagem específica")
 	@RequestMapping(value = "v1/api/viagem/{id}", method = RequestMethod.DELETE, produces = "application/json")
