@@ -87,7 +87,9 @@ public class GerenciadorViagemController {
 		try {
 			viagem = viagemService.buscar(id);
 
-		} catch (NotFoundException e) {
+		}
+
+		catch (NotFoundException e) {
 			response.setErrors(Collections.singletonList(e.getMessage()));
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
