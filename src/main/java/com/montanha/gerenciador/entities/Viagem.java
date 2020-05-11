@@ -36,11 +36,11 @@ public class Viagem implements Serializable {
 
 	@JsonSerialize(using = DateSerializer.class)
 	@Column(name = "data_partida", nullable = false)
-	@ApiModelProperty(value = "Data de partida da viagem")
+	@ApiModelProperty(value = "Data de partida da viagem (yyyy-MM-dd)")
 	private Date dataPartida;
 
 	@JsonSerialize(using = DateSerializer.class)
-	@ApiModelProperty(value = "Data de retorno da viagem")
+	@ApiModelProperty(value = "Data de retorno da viagem (yyyy-MM-dd)")
 	@Column(name = "data_retorno", nullable = true)
 	private Date dataRetorno;
 

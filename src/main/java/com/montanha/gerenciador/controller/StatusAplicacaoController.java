@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/status")
+@RequestMapping("v1/status")
 @ApiOperation(value = "Verifica se a Aplicação está no ar")
 @Api("StatusAplicacaoController")
 public class StatusAplicacaoController {

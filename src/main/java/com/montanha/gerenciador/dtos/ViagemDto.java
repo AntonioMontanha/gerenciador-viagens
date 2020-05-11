@@ -20,11 +20,11 @@ public class ViagemDto implements Serializable {
 	@ApiModelProperty(value = "Local de destino da viagem")
 	private String localDeDestino;
 
-	@ApiModelProperty(value = "Data de partida da viagem")
+	@ApiModelProperty(value = "Data de partida da viagem (yyyy-MM-dd)")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date dataPartida;
 
-	@ApiModelProperty(value = "Data de retorno da viagem")
+	@ApiModelProperty(value = "Data de retorno da viagem (yyyy-MM-dd)")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date dataRetorno;
 

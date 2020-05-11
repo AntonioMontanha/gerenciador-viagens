@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -37,8 +38,9 @@ public class GerenciadorViagemController {
 
 	@ApiOperation(value = "Cadastra uma viagem")
 	@PreAuthorize("hasAnyRole('ADMIN')")	
-	@RequestMapping(value = "v1/api/viagem", method = RequestMethod.POST, produces = "application/json" )
+	@RequestMapping(value = "/v1/viagem", method = RequestMethod.POST, produces = "application/json" )
 	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseBody
 	public ResponseEntity<Response<Viagem>> cadastrar(@Valid @RequestBody ViagemDto viagemDto, @RequestHeader String Authorization, BindingResult result) {
 
 		// Não devemos expor entidades na resposta.
@@ -54,11 +56,12 @@ public class GerenciadorViagemController {
 				.toUri();
 
 		response.setData(viagemSalva);
+
 		return ResponseEntity.created(location).body(response);
 	}
 
 	@ApiOperation(value = "Retorna todas as viagens")
-	@RequestMapping(value = "v1/api/viagem", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/v1/viagem", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasAnyRole('USUARIO')")
 	public ResponseEntity<Response<List<Viagem>>> listar(@RequestParam(value = "regiao", required = false) String regiao, @RequestHeader String Authorization) {
 		List<Viagem> viagens = null;
@@ -75,7 +78,7 @@ public class GerenciadorViagemController {
 	}
 
 	@ApiOperation(value = "Retorna uma viagem específica")
-	@RequestMapping(value = "v1/api/viagem/{id}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/v1/viagem/{id}", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasAnyRole('USUARIO')")
 	public ResponseEntity<Response<ViagemDtoResponse>> buscar(@PathVariable("id") Long id, @RequestHeader String Authorization) throws  IOException {
 		Response<ViagemDtoResponse> response = new Response<ViagemDtoResponse>();
@@ -98,7 +101,7 @@ public class GerenciadorViagemController {
 
 
 	@ApiOperation(value = "Apaga uma viagem específica")
-	@RequestMapping(value = "v1/api/viagem/{id}", method = RequestMethod.DELETE, produces = "application/json")
+	@RequestMapping(value = "/v1/viagem/{id}", method = RequestMethod.DELETE, produces = "application/json")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable("id") Long id, @RequestHeader String Authorization) {
@@ -109,7 +112,7 @@ public class GerenciadorViagemController {
 	}
 	
 	@ApiOperation(value = "Atualiza uma viagem específica")
-	@RequestMapping(value = "v1/api/viagem/{id}", method = RequestMethod.PUT, produces = "application/json")
+	@RequestMapping(value = "/v1/viagem/{id}", method = RequestMethod.PUT, produces = "application/json")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Response<Viagem>> alterar(@PathVariable("id") Long id,@Valid @RequestBody ViagemDto viagemDto, @RequestHeader String Authorization) {
 		

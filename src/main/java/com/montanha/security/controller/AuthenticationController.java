@@ -28,7 +28,6 @@ import com.montanha.gerenciador.dtos.TokenDto;
 import com.montanha.security.utils.JwtTokenUtil;
 
 @RestController
-@RequestMapping("api/auth")
 @CrossOrigin(origins = "*")
 public class AuthenticationController {
 
@@ -53,7 +52,7 @@ public class AuthenticationController {
 	 * @return ResponseEntity<Response<TokenDto>>
 	 * @throws AuthenticationException
 	 */
-	@PostMapping
+	@PostMapping("/v1/auth")
 	@ApiOperation(value = "Gera um Token de acesso")
 	public ResponseEntity<Response<TokenDto>> gerarTokenJwt(@Valid @RequestBody JwtAuthenticationDto authenticationDto,
 			BindingResult result) throws AuthenticationException {
