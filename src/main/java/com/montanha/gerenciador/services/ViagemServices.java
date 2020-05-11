@@ -49,7 +49,7 @@ public class ViagemServices {
 		return viagemRepository.save(viagem);
 	}
 
-	public Viagem buscar(Long id) throws JsonParseException, JsonMappingException, IOException, NotFoundException {
+	public Viagem buscar(Long id) throws IOException, NotFoundException {
 		Viagem viagem = viagemRepository.findOne(id);
 
 		if (viagem == null) {

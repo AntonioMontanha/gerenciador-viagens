@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -87,6 +88,11 @@ public class GerenciadorViagemController {
 			response.setErrors(Collections.singletonList(e.getMessage()));
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
+
+        catch (HttpClientErrorException hce){
+            response.setErrors(Collections.singletonList(hce.getStatusText()));
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
+        }
 
 		// exemplo de não expondo a entidade na resposta, mas o método deveria estar na service.
 		ViagemDtoResponse viagemDtoResponse = Conversor.converterViagemToViagemDtoResponse(viagem);
