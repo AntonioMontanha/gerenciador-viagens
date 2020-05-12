@@ -6,6 +6,7 @@ import java.util.List;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -67,7 +68,7 @@ public class ViagemServices {
 			try {
 				previsaoJson = restTemplate.getForObject(uri, String.class);
 			} catch (HttpClientErrorException hcee) {
-				throw new ViagemServiceException("A API do Tempo não está online");
+				throw new HttpClientErrorException(HttpStatus.UNPROCESSABLE_ENTITY, "A API do Tempo não está online");
 			}
 
 			ObjectNode node = mapper.readValue(previsaoJson, ObjectNode.class);
@@ -118,6 +119,7 @@ public class ViagemServices {
 
 		Viagem viagemExistente = viagemRepository.findOne(id);
 
+		// iremos ter um nullPointerException aqui.
 		viagemExistente.setLocalDeDestino(viagemDto.getLocalDeDestino());
 		viagemExistente.setDataPartida(viagemDto.getDataPartida());
 		viagemExistente.setDataRetorno(viagemDto.getDataRetorno());

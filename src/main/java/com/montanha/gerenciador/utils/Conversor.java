@@ -22,6 +22,10 @@ public abstract class Conversor {
             viagemDtoResponse.setRegiao(viagem.getRegiao());
         }
 
+        if (viagem.getTemperatura() !=  null) {
+            viagemDtoResponse.setTemperatura(viagem.getTemperatura());
+        }
+
         return viagemDtoResponse;
     }
 }

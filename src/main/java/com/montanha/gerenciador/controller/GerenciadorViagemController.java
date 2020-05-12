@@ -125,9 +125,9 @@ public class GerenciadorViagemController {
 	public ResponseEntity<Response<Viagem>> alterar(@PathVariable("id") Long id,@Valid @RequestBody ViagemDto viagemDto, @RequestHeader String Authorization) {
 		
 		
-		Viagem viagem = this.viagemService.alterar(viagemDto, id);
+		viagemService.alterar(viagemDto, id);
 		
-		Response<Viagem> response = new Response<Viagem>();
+		Response<Viagem> response = new Response<>();
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
 	}

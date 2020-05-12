@@ -53,7 +53,7 @@ public class Viagem implements Serializable {
 	private String regiao;
 	
 	@ApiModelProperty(value = "Temperatura prevista da região de destino")
-	private float temperatura;
+	private Float temperatura;
 
 	public Viagem() {
 
@@ -117,11 +117,11 @@ public class Viagem implements Serializable {
 		this.regiao = regiao;
 	}
 	
-	public float getTemperatura() {
+	public Float getTemperatura() {
 		return temperatura;
 	}
 
-	public void setTemperatura(float temperatura) {
+	public void setTemperatura(Float temperatura) {
 		this.temperatura = temperatura;
 	}
 	@Override
