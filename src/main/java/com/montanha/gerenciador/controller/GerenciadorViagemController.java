@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
 import javax.validation.Valid;
 
 import com.montanha.gerenciador.dtos.ViagemDtoResponse;
@@ -21,8 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+
 import com.montanha.gerenciador.dtos.ViagemDto;
 import com.montanha.gerenciador.entities.Viagem;
 import com.montanha.gerenciador.responses.Response;
