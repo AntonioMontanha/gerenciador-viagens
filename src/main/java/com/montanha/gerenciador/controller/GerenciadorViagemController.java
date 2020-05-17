@@ -80,9 +80,9 @@ public class GerenciadorViagemController {
 	@PreAuthorize("hasAnyRole('USUARIO')")
 	public ResponseEntity<Response<ViagemDtoResponse>> buscar(@PathVariable("id") Long id, @RequestHeader String Authorization) throws  IOException {
 		Response<ViagemDtoResponse> response = new Response<ViagemDtoResponse>();
-		Viagem viagem;
+		ViagemDtoResponse viagemDtoResponse;
 		try {
-			viagem = viagemService.buscar(id);
+			viagemDtoResponse = viagemService.buscar(id);
 
 		}
 
@@ -91,13 +91,11 @@ public class GerenciadorViagemController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 
-        catch (HttpClientErrorException hce){
-            response.setErrors(Collections.singletonList(hce.getStatusText()));
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
-        }
+        catch (HttpClientErrorException hce) {
+			response.setErrors(Collections.singletonList(hce.getStatusText()));
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
+		}
 
-		// exemplo de não expondo a entidade na resposta, mas o método deveria estar na service.
-		ViagemDtoResponse viagemDtoResponse = Conversor.converterViagemToViagemDtoResponse(viagem);
 		response.setData(viagemDtoResponse);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(response);

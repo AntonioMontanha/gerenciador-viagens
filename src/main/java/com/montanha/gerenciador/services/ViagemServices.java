@@ -3,6 +3,8 @@ package com.montanha.gerenciador.services;
 import java.io.IOException;
 import java.util.List;
 
+import com.montanha.gerenciador.dtos.ViagemDtoResponse;
+import com.montanha.gerenciador.utils.Conversor;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,13 +52,15 @@ public class ViagemServices {
 		return viagemRepository.save(viagem);
 	}
 
-	public Viagem buscar(Long id) throws IOException, NotFoundException {
+	public ViagemDtoResponse buscar(Long id) throws IOException, NotFoundException {
 		Viagem viagem = viagemRepository.findOne(id);
 
 		if (viagem == null) {
 			throw new NotFoundException(format("Viagem com id: [%s] não encontrada", id));
 
 		}
+
+		ViagemDtoResponse viagemDtoResponse = Conversor.converterViagemToViagemDtoResponse(viagem);
 		String regiao = viagem.getRegiao();
 
 		if (regiao != null) {
@@ -72,13 +76,13 @@ public class ViagemServices {
 			}
 
 			ObjectNode node = mapper.readValue(previsaoJson, ObjectNode.class);
-			viagem.setTemperatura((node.get("data").get("temperatura")).floatValue());
+			viagemDtoResponse.setTemperatura((node.get("data").get("temperatura")).floatValue());
 
 			System.out.println(previsaoDoTempoUri);
 
 		}
 
-		return viagem;
+		return viagemDtoResponse;
 	}
 
 	public Viagem buscarPorLocalDeDestino(String localDeDestino) {

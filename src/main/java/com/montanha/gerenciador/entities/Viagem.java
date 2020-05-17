@@ -51,9 +51,6 @@ public class Viagem implements Serializable {
 	@Column(name = "regiao", nullable = true)
 	@ApiModelProperty(value = "Região de destino da viagem [Norte, Sul, Leste, Oeste]")
 	private String regiao;
-	
-	@ApiModelProperty(value = "Temperatura prevista da região de destino")
-	private Float temperatura;
 
 	public Viagem() {
 
@@ -116,14 +113,7 @@ public class Viagem implements Serializable {
 	public void setRegiao(String regiao) {
 		this.regiao = regiao;
 	}
-	
-	public Float getTemperatura() {
-		return temperatura;
-	}
 
-	public void setTemperatura(Float temperatura) {
-		this.temperatura = temperatura;
-	}
 	@Override
 	public String toString() {
 		return "Viagem [id=" + id + ", localDeDestino=" + localDeDestino + ", dataPartida=" + dataPartida
