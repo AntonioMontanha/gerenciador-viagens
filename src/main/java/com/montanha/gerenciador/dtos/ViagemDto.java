@@ -4,11 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
-
+import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import io.swagger.annotations.ApiModelProperty;
 
 public class ViagemDto implements Serializable {
@@ -40,7 +37,7 @@ public class ViagemDto implements Serializable {
 	}
 
 	@NotNull(message = "Local de Destino é uma informação obrigatória")
-	@Length(min = 3, max = 40, message = "Local de Destino deve estar entre 3 e 40 caracteres")
+	@Size(min = 3, max = 40, message = "Local de Destino deve estar entre 3 e 40 caracteres")
 	public String getLocalDeDestino() {
 		return localDeDestino;
 	}

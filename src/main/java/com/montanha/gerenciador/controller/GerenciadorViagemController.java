@@ -7,7 +7,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.montanha.gerenciador.dtos.ViagemDtoResponse;
-import com.montanha.gerenciador.utils.Conversor;
 import io.swagger.annotations.Api;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
