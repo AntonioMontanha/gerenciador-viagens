@@ -6,16 +6,22 @@ import java.util.Collections;
 import java.util.List;
 import javax.validation.Valid;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.montanha.gerenciador.dtos.ViagemDtoResponse;
+import com.montanha.gerenciador.repositories.ViagemRepository;
+import com.montanha.gerenciador.utils.Conversor;
 import io.swagger.annotations.Api;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
@@ -30,44 +36,37 @@ import io.swagger.annotations.ApiOperation;
 @Api("GerenciadorViagensController")
 public class GerenciadorViagemController {
 
+	@Value("${previsaoDoTempoUri}")
+	String previsaoDoTempoUri;
 	@Autowired
 	private ViagemServices viagemService;
+
+	@Autowired
+	private ViagemRepository viagemRepository;
+
+	@Autowired
+	private ObjectMapper mapper;
 
 	@ApiOperation(value = "Cadastra uma viagem")
 	@PreAuthorize("hasAnyRole('ADMIN')")	
 	@RequestMapping(value = "/v1/viagens", method = RequestMethod.POST, produces = "application/json" )
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	public ResponseEntity<Response<Viagem>> cadastrar(@Valid @RequestBody ViagemDto viagemDto, @RequestHeader String Authorization, BindingResult result) {
+	public ResponseEntity cadastrar(@Valid @RequestBody ViagemDto viagemDto, @RequestHeader String Authorization, BindingResult result) {
 
-		// Não devemos expor entidades na resposta.
-		Response<Viagem> response = new Response<Viagem>();
+		this.viagemService.salvar(viagemDto);
 
-		if (result.hasErrors()) {
-			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
-			return ResponseEntity.badRequest().body(response);
-		}
 
-		Viagem viagemSalva = this.viagemService.salvar(viagemDto);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(viagemSalva.getId())
-				.toUri();
-
-		response.setData(viagemSalva);
-
-		return ResponseEntity.created(location).body(response);
+		return new ResponseEntity(HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Retorna todas as viagens")
 	@RequestMapping(value = "/v1/viagens", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasAnyRole('USUARIO')")
-	public ResponseEntity<Response<List<Viagem>>> listar(@RequestParam(value = "regiao", required = false) String regiao, @RequestHeader String Authorization) {
+	public ResponseEntity<Response<List<Viagem>>> listar( @RequestHeader String Authorization) {
 		List<Viagem> viagens = null;
 
-		if (regiao == null) {
-			viagens = viagemService.listar();
-		} else {
-			viagens = viagemService.buscarViagensPorRegiao(regiao);
-		}
+		viagens = viagemRepository.findAll();
 
 		Response<List<Viagem>> viagensResponse = new Response<>();
 		viagensResponse.setData(viagens);
@@ -79,24 +78,24 @@ public class GerenciadorViagemController {
 	@PreAuthorize("hasAnyRole('USUARIO')")
 	public ResponseEntity<Response<ViagemDtoResponse>> buscar(@PathVariable("id") Long id, @RequestHeader String Authorization) throws  IOException {
 		Response<ViagemDtoResponse> response = new Response<ViagemDtoResponse>();
-		ViagemDtoResponse viagemDtoResponse;
-		try {
-			viagemDtoResponse = viagemService.buscar(id);
 
-		}
+		Viagem viagem = viagemRepository.findOne(id);
 
-		catch (NotFoundException e) {
-			response.setErrors(Collections.singletonList(e.getMessage()));
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		}
+		ViagemDtoResponse viagemDtoResponse = Conversor.converterViagemToViagemDtoResponse(viagem);
+		String regiao = viagem.getRegiao();
 
-        catch (HttpClientErrorException hce) {
-			response.setErrors(Collections.singletonList(hce.getStatusText()));
-			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
-		}
+		if (regiao != null) {
+			final String uri = previsaoDoTempoUri + "tempo-api/temperatura?regiao=" + regiao;
+			RestTemplate restTemplate = new RestTemplate();
 
-		response.setData(viagemDtoResponse);
-		
+			String previsaoJson = "";
+			previsaoJson = restTemplate.getForObject(uri, String.class);
+			ObjectNode node = mapper.readValue(previsaoJson, ObjectNode.class);
+			viagemDtoResponse.setTemperatura((node.get("data").get("temperatura")).floatValue());
+
+			response.setData(viagemDtoResponse);
+			}
+
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
