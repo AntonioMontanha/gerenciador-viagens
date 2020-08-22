@@ -53,7 +53,7 @@ public class ViagemServices {
 	}
 
 	public ViagemDtoResponse buscar(Long id) throws IOException, NotFoundException {
-		Viagem viagem = viagemRepository.findOne(id);
+		Viagem viagem = viagemRepository.getOne(id);
 
 		if (viagem == null) {
 			throw new NotFoundException(format("Viagem com id: [%s] não encontrada", id));
@@ -114,14 +114,14 @@ public class ViagemServices {
 	}
 
 	public Viagem buscarSemTratativa(Long id) {
-		Viagem viagem = viagemRepository.findOne(id);
+		Viagem viagem = viagemRepository.getOne(id);
 
 		return viagem;
 	}
 
 	public Viagem alterar(ViagemDto viagemDto, Long id) {
 
-		Viagem viagemExistente = viagemRepository.findOne(id);
+		Viagem viagemExistente = viagemRepository.getOne(id);
 
 		// iremos ter um nullPointerException aqui.
 		viagemExistente.setLocalDeDestino(viagemDto.getLocalDeDestino());

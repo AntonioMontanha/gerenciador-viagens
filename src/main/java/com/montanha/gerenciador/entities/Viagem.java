@@ -47,7 +47,7 @@ public class Viagem implements Serializable {
 	@Column(name = "acompanhante", nullable = true)
 	@ApiModelProperty(value = "Nome do acompanhante da viagem")
 	private String acompanhante;
-	
+
 	@Column(name = "regiao", nullable = true)
 	@ApiModelProperty(value = "Região de destino da viagem [Norte, Sul, Leste, Oeste]")
 	private String regiao;

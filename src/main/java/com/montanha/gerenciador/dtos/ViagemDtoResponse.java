@@ -18,7 +18,7 @@ public class ViagemDtoResponse implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "Local de destino da viagem")
-    private String localDeDestino;
+    private String localDestino;
 
     @ApiModelProperty(value = "Data de partida da viagem")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -45,11 +45,11 @@ public class ViagemDtoResponse implements Serializable {
     @NotNull(message = "Local de Destino é uma informação obrigatória")
     @Length(min = 3, max = 40, message = "Local de Destino deve estar entre 3 e 40 caracteres")
     public String getLocalDeDestino() {
-        return localDeDestino;
+        return localDestino;
     }
 
     public void setLocalDeDestino(String localDeDestino) {
-        this.localDeDestino = localDeDestino;
+        this.localDestino = localDeDestino;
     }
 
     @NotNull(message = "Data da Partida é uma informação obrigatória")
@@ -104,7 +104,7 @@ public class ViagemDtoResponse implements Serializable {
 
     @Override
     public String toString() {
-        return "ViagemDto [id=" + ", localDeDestino=" + localDeDestino + ", dataPartida=" + dataPartida
+        return "ViagemDto [id=" + ", localDeDestino=" + localDestino + ", dataPartida=" + dataPartida
                 + ", dataRetorno=" + dataRetorno + ", acompanhante=" + acompanhante + "]";
     }
 }

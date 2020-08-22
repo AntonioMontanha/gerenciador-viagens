@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 public class ViagemDto implements Serializable {
@@ -14,7 +15,8 @@ public class ViagemDto implements Serializable {
 
 
 
-	@ApiModelProperty(value = "Local de destino da viagem")
+	@ApiModelProperty(name = "localDeDestino", value = "Local de destino da viagem", required = true)
+	@JsonProperty(value = "localDeDestino")
 	private String localDeDestino;
 
 	@ApiModelProperty(value = "Data de partida da viagem (yyyy-MM-dd)")
@@ -27,8 +29,8 @@ public class ViagemDto implements Serializable {
 
 	@ApiModelProperty(value = "Nome do acompanhante da viagem")
 	private String acompanhante;
-	
-	@ApiModelProperty(value = "Região de destino da viagem [Norte, Sul, Leste, Oeste]")
+
+	@ApiModelProperty(value = "Região de destino da viagem", allowableValues = "Norte, Sul, Leste, Oeste")
 	private String regiao;
 
 

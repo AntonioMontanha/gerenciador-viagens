@@ -60,7 +60,7 @@ public class GerenciadorViagemController {
 	@ApiOperation(value = "Retorna todas as viagens")
 	@RequestMapping(value = "/v1/viagens", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasAnyRole('USUARIO')")
-	public ResponseEntity<Response<List<Viagem>>> listar(@RequestParam(value = "regiao", required = false) String regiao, @RequestHeader String Authorization) {
+	public ResponseEntity<Response<List<Viagem>>> listar(@RequestParam(value = "regiao", required = true) String regiao, @RequestHeader String Authorization) {
 		List<Viagem> viagens = null;
 
 		if (regiao == null) {
@@ -71,8 +71,9 @@ public class GerenciadorViagemController {
 
 		Response<List<Viagem>> viagensResponse = new Response<>();
 		viagensResponse.setData(viagens);
-		return ResponseEntity.status(HttpStatus.OK).body(viagensResponse);
+		return ResponseEntity.status(HttpStatus.CREATED).body(viagensResponse);
 	}
+
 
 	@ApiOperation(value = "Retorna uma viagem específica")
 	@RequestMapping(value = "/v1/viagens/{id}", method = RequestMethod.GET, produces = "application/json")

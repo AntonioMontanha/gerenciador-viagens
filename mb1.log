@@ -1,0 +1,8 @@
+{"message":"[mb:2525] mountebank v2.1.2 now taking orders - point your browser to http://localhost:2525/ for help","level":"info","timestamp":"2020-07-26T18:49:57.448Z"}
+{"message":"[mb:2525] POST /imposters","level":"info","timestamp":"2020-07-26T18:49:59.218Z"}
+{"message":"[http:4545] Open for business...","level":"info","timestamp":"2020-07-26T18:49:59.244Z"}
+{"message":"[mb:2525] GET /tempo-api/temperatura?regiao=Sul","level":"info","timestamp":"2020-07-26T18:50:02.554Z"}
+{"message":"[mb:2525] GET /tempo-api/temperatura?regiao=Sul","level":"info","timestamp":"2020-07-26T18:50:07.357Z"}
+{"message":"[http:4545] ::1:52999 => GET /tempo-api/temperatura?regiao=Sul","level":"info","timestamp":"2020-07-26T18:50:30.138Z"}
+{"message":"[http:4545] ::ffff:127.0.0.1:53006 => GET /tempo-api/temperatura?regiao=Sul","level":"info","timestamp":"2020-07-26T18:51:00.885Z"}
+{"message":"[mb:2525] Adios - see you soon?","level":"info","timestamp":"2020-07-26T18:51:59.344Z"}
