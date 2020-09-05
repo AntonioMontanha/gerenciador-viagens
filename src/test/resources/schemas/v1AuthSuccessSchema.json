@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "title": "The root schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "default": {},
+  "examples": [
+    {
+      "data": {
+        "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImNyZWF0ZWQiOjE1OTgwNTc0ODUwNTYsImV4cCI6MTU5ODE1NzQ4NH0.TbdT0Q_BoN92UpA95RY0TsQRT0tWB5-zfh-JjHRZ4Jvl3XTaQL-pZ8946STFNC1ICl0DkIrUxNKbGpVY4HXz8g"
+      },
+      "errors": []
+    }
+  ],
+  "required": [
+    "data",
+    "errors"
+  ],
+  "properties": {
+    "data": {
+      "$id": "#/properties/data",
+      "type": "object",
+      "title": "The data schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": {},
+      "examples": [
+        {
+          "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImNyZWF0ZWQiOjE1OTgwNTc0ODUwNTYsImV4cCI6MTU5ODE1NzQ4NH0.TbdT0Q_BoN92UpA95RY0TsQRT0tWB5-zfh-JjHRZ4Jvl3XTaQL-pZ8946STFNC1ICl0DkIrUxNKbGpVY4HXz8g"
+        }
+      ],
+      "required": [
+        "token"
+      ],
+      "properties": {
+        "token": {
+          "$id": "#/properties/data/properties/token",
+          "type": "string",
+          "title": "The token schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImNyZWF0ZWQiOjE1OTgwNTc0ODUwNTYsImV4cCI6MTU5ODE1NzQ4NH0.TbdT0Q_BoN92UpA95RY0TsQRT0tWB5-zfh-JjHRZ4Jvl3XTaQL-pZ8946STFNC1ICl0DkIrUxNKbGpVY4HXz8g"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "errors": {
+      "$id": "#/properties/errors",
+      "type": "array",
+      "title": "The errors schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": [],
+      "examples": [
+        []
+      ],
+      "additionalItems": true,
+      "items": {
+        "$id": "#/properties/errors/items"
+      }
+    }
+  },
+  "additionalProperties": true
+}
