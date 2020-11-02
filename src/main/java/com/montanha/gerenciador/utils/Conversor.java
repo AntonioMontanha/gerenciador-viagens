@@ -8,7 +8,7 @@ public abstract class Conversor {
     public static ViagemDtoResponse converterViagemToViagemDtoResponse(Viagem viagem) {
 
         ViagemDtoResponse viagemDtoResponse = new ViagemDtoResponse();
-        viagemDtoResponse.setId(viagem.getId());
+        viagemDtoResponse.setId(viagem.getId().toString());
         viagemDtoResponse.setAcompanhante(viagem.getAcompanhante());
         viagemDtoResponse.setDataPartida(viagem.getDataPartida());
         if (viagem.getDataRetorno() != null) {

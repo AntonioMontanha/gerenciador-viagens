@@ -15,7 +15,7 @@ public class ViagemDtoResponse implements Serializable {
     private static final long serialVersionUID = -8105241933692707649L;
 
     @ApiModelProperty(value = "Id da viagem")
-    private Long id;
+    private String id;
 
     @ApiModelProperty(value = "Local de destino da viagem")
     private String localDeDestino;
@@ -85,11 +85,11 @@ public class ViagemDtoResponse implements Serializable {
         this.regiao = regiao;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
