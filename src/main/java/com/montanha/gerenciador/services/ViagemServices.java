@@ -67,11 +67,15 @@ public class ViagemServices {
 
 			String previsaoJson = "";
 
+			System.out.println(uri);
+
 			try {
 				previsaoJson = restTemplate.getForObject(uri, String.class);
 			} catch (Exception e) {
 				throw new HttpServerErrorException(HttpStatus.BAD_GATEWAY, "Não conseguimos identificar a temperatura");
 			}
+
+			System.out.println(previsaoJson);
 
 			ObjectNode node = mapper.readValue(previsaoJson, ObjectNode.class);
 			viagemDtoResponse.setTemperatura((node.get("data").get("temperatura")).floatValue());
