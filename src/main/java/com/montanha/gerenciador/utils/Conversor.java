@@ -9,7 +9,7 @@ public abstract class Conversor {
 
         ViagemDtoResponse viagemDtoResponse = new ViagemDtoResponse();
         viagemDtoResponse.setId(viagem.getId());
-        // viagemDtoResponse.setAcompanhante(viagem.getAcompanhante());
+        viagemDtoResponse.setAcompanhante(viagem.getAcompanhante());
         viagemDtoResponse.setDataPartida(viagem.getDataPartida());
 
         if (viagem.getDataRetorno() != null) {
