@@ -27,9 +27,6 @@ import static java.lang.String.format;
 @Service
 public class ViagemServices {
 
-	@Value("${previsaoDoTempoUri}")
-	String previsaoDoTempoUri;
-
 	@Autowired
 	private ViagemRepository viagemRepository;
 
@@ -61,26 +58,6 @@ public class ViagemServices {
 		}
 
 		ViagemDtoResponse viagemDtoResponse = Conversor.converterViagemToViagemDtoResponse(viagem);
-		String regiao = viagem.getRegiao();
-
-		if (regiao != null) {
-			final String uri = previsaoDoTempoUri + "tempo-api/temperatura?regiao=" + regiao;
-			RestTemplate restTemplate = new RestTemplate();
-
-			String previsaoJson = "";
-
-			try {
-				previsaoJson = restTemplate.getForObject(uri, String.class);
-			} catch (HttpClientErrorException hcee) {
-				throw new HttpClientErrorException(HttpStatus.UNPROCESSABLE_ENTITY, "A API do Tempo não está online");
-			}
-
-			ObjectNode node = mapper.readValue(previsaoJson, ObjectNode.class);
-			viagemDtoResponse.setTemperatura((node.get("data").get("temperatura")).floatValue());
-
-			System.out.println(previsaoDoTempoUri);
-
-		}
 
 		return viagemDtoResponse;
 	}
