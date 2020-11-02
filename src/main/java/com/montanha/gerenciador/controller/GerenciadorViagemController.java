@@ -81,7 +81,7 @@ public class GerenciadorViagemController {
 	@ApiOperation(value = "Retorna uma viagem específica")
 	@RequestMapping(value = "/v1/viagens/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ApiResponses(value = {
-			@ApiResponse(code = 422, message = "Unprocessable Entity"),
+			@ApiResponse(code = 502, message = "Bad Gateway"),
 			@ApiResponse(code = 404, message = "Not Found"),
 			@ApiResponse(code = 200, message = "OK")
 	})
