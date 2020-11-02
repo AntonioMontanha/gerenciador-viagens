@@ -8,7 +8,9 @@ import com.montanha.gerenciador.utils.Conversor;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -20,7 +22,6 @@ import com.montanha.gerenciador.services.exceptions.ViagemServiceException;
 import javax.naming.ServiceUnavailableException;
 
 import static java.lang.String.format;
-import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @Service
 public class ViagemServices {
@@ -50,7 +51,7 @@ public class ViagemServices {
 		return viagemRepository.save(viagem);
 	}
 
-	public ViagemDtoResponse buscar(Long id) throws IOException, NotFoundException, ServiceUnavailableException {
+	public ViagemDtoResponse buscar(Long id) throws IOException, NotFoundException, HttpServerErrorException {
 		Viagem viagem = viagemRepository.findOne(id);
 
 		if (viagem == null) {
@@ -69,8 +70,9 @@ public class ViagemServices {
 			try {
 				previsaoJson = restTemplate.getForObject(uri, String.class);
 			} catch (Exception e) {
-				throw new ServiceUnavailableException("Não conseguimos identificar a temperatura");
+				throw new HttpServerErrorException(HttpStatus.BAD_GATEWAY, "Não conseguimos identificar a temperatura");
 			}
+
 			System.out.println(previsaoJson);
 
 			ObjectNode node = mapper.readValue(previsaoJson, ObjectNode.class);

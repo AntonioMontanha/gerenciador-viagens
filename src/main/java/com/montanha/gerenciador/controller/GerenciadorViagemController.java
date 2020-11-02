@@ -19,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
@@ -94,9 +95,9 @@ public class GerenciadorViagemController {
 		} catch (NotFoundException e) {
 			response.setErrors(Collections.singletonList(e.getMessage()));
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		} catch (ServiceUnavailableException sue) {
-			response.setErrors(Collections.singletonList(sue.getMessage()));
-			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
+		} catch (HttpServerErrorException hsee) {
+			response.setErrors(Collections.singletonList(hsee.getMessage()));
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(response);
 		}
 
 		response.setData(viagemDtoResponse);
