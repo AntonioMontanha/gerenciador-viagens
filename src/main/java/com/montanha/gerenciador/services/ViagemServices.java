@@ -65,7 +65,7 @@ public class ViagemServices {
 		String regiao = viagem.getRegiao();
 
 		if (regiao != null) {
-			final String uri = tempoAPI + "tempo-api/temperatura?regiao=" + regiao;
+			final String uri = tempoAPI + "tempo-api/temperatura/" + regiao;
 			RestTemplate restTemplate = new RestTemplate();
 
 			String previsaoJson = "";
