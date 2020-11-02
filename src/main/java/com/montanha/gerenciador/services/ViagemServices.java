@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.montanha.gerenciador.dtos.ViagemDtoResponse;
 import com.montanha.gerenciador.utils.Conversor;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,9 @@ import static java.lang.String.format;
 
 @Service
 public class ViagemServices {
+
+	@Value("${tempo.api}")
+	private String tempoAPI;
 
 	@Autowired
 	private ViagemRepository viagemRepository;
@@ -58,6 +62,27 @@ public class ViagemServices {
 		}
 
 		ViagemDtoResponse viagemDtoResponse = Conversor.converterViagemToViagemDtoResponse(viagem);
+		String regiao = viagem.getRegiao();
+
+		if (regiao != null) {
+			final String uri = tempoAPI + "tempo-api/temperatura?regiao=" + regiao;
+			RestTemplate restTemplate = new RestTemplate();
+
+			String previsaoJson = "";
+
+			try {
+				previsaoJson = restTemplate.getForObject(uri, String.class);
+			} catch (HttpClientErrorException hcee) {
+				throw new HttpClientErrorException(HttpStatus.UNPROCESSABLE_ENTITY, "A API do Tempo não está online");
+			}
+
+			System.out.println(previsaoJson);
+
+			ObjectNode node = mapper.readValue(previsaoJson, ObjectNode.class);
+			viagemDtoResponse.setTemperatura((node.get("data").get("temperatura")).floatValue());
+
+			System.out.println(tempoAPI);
+		}
 
 		return viagemDtoResponse;
 	}

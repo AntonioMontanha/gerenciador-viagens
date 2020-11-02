@@ -34,6 +34,9 @@ public class ViagemDtoResponse implements Serializable {
     @ApiModelProperty(value = "Região de destino da viagem [Norte, Sul, Leste, Oeste]")
     private String regiao;
 
+    @ApiModelProperty(value = "Temperatura prevista da região de destino")
+    private Float temperatura;
+
 
     public ViagemDtoResponse() {
 
@@ -90,9 +93,18 @@ public class ViagemDtoResponse implements Serializable {
         this.id = id;
     }
 
+    public Float getTemperatura() {
+        return temperatura;
+    }
+
+    public void setTemperatura(Float temperatura) {
+        this.temperatura = temperatura;
+    }
+
+
     @Override
     public String toString() {
         return "ViagemDto [id=" + ", localDeDestino=" + localDeDestino + ", dataPartida=" + dataPartida
-                + ", dataRetorno=" + dataRetorno + ", acompanhante=" + acompanhante + "]";
+                + ", dataRetorno=" + dataRetorno + ", acompanhante=" + acompanhante + ", temperatura=" + temperatura + "]";
     }
 }
