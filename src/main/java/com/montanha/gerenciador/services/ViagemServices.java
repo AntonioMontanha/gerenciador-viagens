@@ -5,17 +5,11 @@ import java.util.List;
 
 import com.montanha.gerenciador.dtos.ViagemDtoResponse;
 import com.montanha.gerenciador.utils.Conversor;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.montanha.gerenciador.dtos.ViagemDto;
@@ -23,7 +17,10 @@ import com.montanha.gerenciador.entities.Viagem;
 import com.montanha.gerenciador.repositories.ViagemRepository;
 import com.montanha.gerenciador.services.exceptions.ViagemServiceException;
 
+import javax.naming.ServiceUnavailableException;
+
 import static java.lang.String.format;
+import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @Service
 public class ViagemServices {
@@ -53,12 +50,11 @@ public class ViagemServices {
 		return viagemRepository.save(viagem);
 	}
 
-	public ViagemDtoResponse buscar(Long id) throws IOException, NotFoundException {
+	public ViagemDtoResponse buscar(Long id) throws IOException, NotFoundException, ServiceUnavailableException {
 		Viagem viagem = viagemRepository.findOne(id);
 
 		if (viagem == null) {
 			throw new NotFoundException(format("Viagem com id: [%s] não encontrada", id));
-
 		}
 
 		ViagemDtoResponse viagemDtoResponse = Conversor.converterViagemToViagemDtoResponse(viagem);
@@ -72,10 +68,9 @@ public class ViagemServices {
 
 			try {
 				previsaoJson = restTemplate.getForObject(uri, String.class);
-			} catch (HttpClientErrorException hcee) {
-				throw new HttpClientErrorException(HttpStatus.UNPROCESSABLE_ENTITY, "A API do Tempo não está online");
+			} catch (Exception e) {
+				throw new ServiceUnavailableException("Não conseguimos identificar a temperatura");
 			}
-
 			System.out.println(previsaoJson);
 
 			ObjectNode node = mapper.readValue(previsaoJson, ObjectNode.class);

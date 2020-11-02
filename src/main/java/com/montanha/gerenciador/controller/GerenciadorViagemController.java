@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
+import javax.naming.ServiceUnavailableException;
 import javax.validation.Valid;
 
 import com.montanha.gerenciador.dtos.ViagemDtoResponse;
@@ -86,15 +87,16 @@ public class GerenciadorViagemController {
 	@PreAuthorize("hasAnyRole('USUARIO')")
 	public ResponseEntity<Response<ViagemDtoResponse>> buscar(@PathVariable("id") Long id, @RequestHeader String Authorization) throws  IOException {
 		Response<ViagemDtoResponse> response = new Response<ViagemDtoResponse>();
-		ViagemDtoResponse viagemDtoResponse;
+		ViagemDtoResponse viagemDtoResponse = null;
+
 		try {
 			viagemDtoResponse = viagemService.buscar(id);
 		} catch (NotFoundException e) {
 			response.setErrors(Collections.singletonList(e.getMessage()));
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		} catch (HttpClientErrorException hce) {
-			response.setErrors(Collections.singletonList(hce.getStatusText()));
-			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
+		} catch (ServiceUnavailableException sue) {
+			response.setErrors(Collections.singletonList(sue.getMessage()));
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
 		}
 
 		response.setData(viagemDtoResponse);
