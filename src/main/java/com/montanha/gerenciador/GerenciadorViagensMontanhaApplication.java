@@ -53,6 +53,7 @@ public class GerenciadorViagensMontanhaApplication {
 			viagemNorteSucesso.setRegiao("Norte");
 			viagemNorteSucesso.setLocalDeDestino("Manaus");
 			viagemNorteSucesso.setDataPartida(new Date());
+			viagemNorteSucesso.setDataRetorno(new Date());
 			this.viagemRepository.save(viagemNorteSucesso);
 
 			Viagem viagemSudesteIndisponivel = new Viagem();
@@ -60,6 +61,7 @@ public class GerenciadorViagensMontanhaApplication {
 			viagemSudesteIndisponivel.setRegiao("Sudeste");
 			viagemSudesteIndisponivel.setLocalDeDestino("Rio de Janeiro");
 			viagemSudesteIndisponivel.setDataPartida(new Date());
+			viagemSudesteIndisponivel.setDataRetorno(new Date());
 			this.viagemRepository.save(viagemSudesteIndisponivel);
 		};
 	}
