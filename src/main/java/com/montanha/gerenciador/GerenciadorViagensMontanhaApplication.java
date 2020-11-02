@@ -47,6 +47,20 @@ public class GerenciadorViagensMontanhaApplication {
 			admin.setPerfil(PerfilEnum.ROLE_ADMIN);
 			admin.setSenha(SenhaUtils.gerarBCrypt("654321"));
 			this.usuarioRepository.save(admin);
+
+			Viagem viagemNorteSucesso = new Viagem();
+			viagemNorteSucesso.setAcompanhante("Isabelle");
+			viagemNorteSucesso.setRegiao("Norte");
+			viagemNorteSucesso.setLocalDeDestino("Manaus");
+			viagemNorteSucesso.setDataPartida(new Date());
+			this.viagemRepository.save(viagemNorteSucesso);
+
+			Viagem viagemSudesteIndisponivel = new Viagem();
+			viagemSudesteIndisponivel.setAcompanhante("Priscila");
+			viagemSudesteIndisponivel.setRegiao("Sudeste");
+			viagemSudesteIndisponivel.setLocalDeDestino("Rio de Janeiro");
+			viagemSudesteIndisponivel.setDataPartida(new Date());
+			this.viagemRepository.save(viagemSudesteIndisponivel);
 		};
 	}
 
