@@ -105,6 +105,6 @@ public class ViagemDtoResponse implements Serializable {
     @Override
     public String toString() {
         return "ViagemDto [id=" + ", localDeDestino=" + localDeDestino + ", dataPartida=" + dataPartida
-                + ", dataRetorno=" + dataRetorno + ", acompanhante=" + acompanhante + "]";
+                + ", dataRetorno=" + dataRetorno + ", acompanhante=" + acompanhante + ", temperatura=" + temperatura + "]";
     }
 }

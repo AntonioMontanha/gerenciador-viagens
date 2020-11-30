@@ -1,5 +1,7 @@
 package com.montanha.gerenciador;
 
+import com.montanha.gerenciador.entities.Viagem;
+import com.montanha.gerenciador.repositories.ViagemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +15,8 @@ import com.montanha.gerenciador.enums.PerfilEnum;
 import com.montanha.gerenciador.repositories.UsuarioRepository;
 import com.montanha.utils.SenhaUtils;
 
+import java.util.Date;
+
 @SpringBootApplication
 @Configuration
 @ComponentScan("com.montanha")
@@ -20,6 +24,9 @@ public class GerenciadorViagensMontanhaApplication {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+
+	@Autowired
+	private ViagemRepository viagemRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(GerenciadorViagensMontanhaApplication.class, args);
@@ -40,7 +47,22 @@ public class GerenciadorViagensMontanhaApplication {
 			admin.setPerfil(PerfilEnum.ROLE_ADMIN);
 			admin.setSenha(SenhaUtils.gerarBCrypt("654321"));
 			this.usuarioRepository.save(admin);
-			
+
+			Viagem viagemNorteSucesso = new Viagem();
+			viagemNorteSucesso.setAcompanhante("Isabelle");
+			viagemNorteSucesso.setRegiao("Norte");
+			viagemNorteSucesso.setLocalDeDestino("Manaus");
+			viagemNorteSucesso.setDataPartida(new Date());
+			viagemNorteSucesso.setDataRetorno(new Date());
+			this.viagemRepository.save(viagemNorteSucesso);
+
+			Viagem viagemSudesteIndisponivel = new Viagem();
+			viagemSudesteIndisponivel.setAcompanhante("Priscila");
+			viagemSudesteIndisponivel.setRegiao("Sudeste");
+			viagemSudesteIndisponivel.setLocalDeDestino("Rio de Janeiro");
+			viagemSudesteIndisponivel.setDataPartida(new Date());
+			viagemSudesteIndisponivel.setDataRetorno(new Date());
+			this.viagemRepository.save(viagemSudesteIndisponivel);
 		};
 	}
 

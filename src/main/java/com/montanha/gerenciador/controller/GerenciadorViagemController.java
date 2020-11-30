@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
+import javax.naming.ServiceUnavailableException;
 import javax.validation.Valid;
 
 import com.montanha.gerenciador.dtos.ViagemDtoResponse;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
@@ -76,23 +80,24 @@ public class GerenciadorViagemController {
 
 	@ApiOperation(value = "Retorna uma viagem específica")
 	@RequestMapping(value = "/v1/viagens/{id}", method = RequestMethod.GET, produces = "application/json")
+	@ApiResponses(value = {
+			@ApiResponse(code = 502, message = "Bad Gateway"),
+			@ApiResponse(code = 404, message = "Not Found"),
+			@ApiResponse(code = 200, message = "OK")
+	})
 	@PreAuthorize("hasAnyRole('USUARIO')")
 	public ResponseEntity<Response<ViagemDtoResponse>> buscar(@PathVariable("id") Long id, @RequestHeader String Authorization) throws  IOException {
 		Response<ViagemDtoResponse> response = new Response<ViagemDtoResponse>();
-		ViagemDtoResponse viagemDtoResponse;
+		ViagemDtoResponse viagemDtoResponse = null;
+
 		try {
 			viagemDtoResponse = viagemService.buscar(id);
-
-		}
-
-		catch (NotFoundException e) {
+		} catch (NotFoundException e) {
 			response.setErrors(Collections.singletonList(e.getMessage()));
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		}
-
-        catch (HttpClientErrorException hce) {
-			response.setErrors(Collections.singletonList(hce.getStatusText()));
-			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
+		} catch (HttpServerErrorException hsee) {
+			response.setErrors(Collections.singletonList(hsee.getMessage()));
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(response);
 		}
 
 		response.setData(viagemDtoResponse);
