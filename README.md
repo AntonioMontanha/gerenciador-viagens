@@ -93,4 +93,9 @@ $ curl -X GET -is http://localhost:8089/api/v1/viagens?regiao=Sul -H 'Content-Ty
 ### Given When Then
 **Given_Preconditions_When_StateUnderTest_Then_ExpectedBehavior**: This approach is based on naming convention developed as part of Behavior-Driven Development (BDD). The idea is to break down the tests into three part such that one could come up with preconditions, state under test and expected behavior to be written in above format. Following is how tests in first example would read like if named using this technique:
 
-- Given_UserIsAuthenticated_When_InvalidAccountNumberIsUsedToWithdrawMoney_Then_TransactionsWillFail    
+- Given_UserIsAuthenticated_When_InvalidAccountNumberIsUsedToWithdrawMoney_Then_TransactionsWillFail
+## [Estratégias de Testes de API Rest (Aula 12)](https://www.youtube.com/watch?v=sA-avXicmLs&list=PLf8x7B3nFTl17WeEVj405tHlstiq1kNBX&index=12)
+
+[Diagrama Mapa Mental](https://viewer.diagrams.net/?highlight=FF0080&edit=_blank&layers=1&nav=1&title=Estrat%C3%A9gias%20de%20Testes%20de%20API%20REST.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1YzuJ-60ZHHXfIvVowBQI6omeRuLhQ-pK%26export%3Ddownload)
+
+![Mapa Mental Estratégias de Teste](https://github.com/tarcnux/gerenciador-viagens/blob/master/MapaMentalTesteDeSoftware.png)
