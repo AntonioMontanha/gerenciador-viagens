@@ -43,7 +43,7 @@ public class ViagemServices {
 	public Viagem salvar(ViagemDto viagemDto) throws Exception {
 
 		if (viagemDto.getArrivalDate() < viagemDto.getDepartureDate()) {
-			throw new Exception("Arrival date should never be greater than the Departure date");
+			throw new Exception("Arrival date should never be lower than the Departure date");
 		}
 
 		Viagem viagem = new Viagem();
