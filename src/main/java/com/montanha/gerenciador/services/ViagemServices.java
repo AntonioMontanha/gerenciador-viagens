@@ -42,8 +42,8 @@ public class ViagemServices {
 
 	public Viagem salvar(ViagemDto viagemDto) throws Exception {
 
-		if (viagemDto.getDataRetorno() < viagemDto.getDataPartida()) {
-			throw new Exception("Arrival date should be equal or greater than the Departure date");
+		if (viagemDto.getArrivalDate() < viagemDto.getDepartureDate()) {
+			throw new Exception("Arrival date should never be greater than the Departure date");
 		}
 
 		Viagem viagem = new Viagem();
