@@ -40,7 +40,11 @@ public class ViagemServices {
 		return viagemRepository.findAll();
 	}
 
-	public Viagem salvar(ViagemDto viagemDto) {
+	public Viagem salvar(ViagemDto viagemDto) throws Exception {
+
+		if (viagemDto.getDataRetorno() < viagemDto.getDataPartida()) {
+			throw new Exception("Arrival date should be equal or greater than the Departure date");
+		}
 
 		Viagem viagem = new Viagem();
 
