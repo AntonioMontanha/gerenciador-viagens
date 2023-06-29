@@ -24,20 +24,33 @@ public class ViagensTest {
         .when()
             .post("/v1/auth")
         .then()
-            .log().all()
-            .extract()
+                 .extract()
             .path("data.token");
 
 
 
-
-
-
-
-
-
-
     // Cadastrar a viagem
+        given()
+                .header("Authorization", token)
+                .body("{\n" +
+                        "  \"acompanhante\": \"Jullyan\",\n" +
+                        "  \"dataPartida\": \"2023-07-20\",\n" +
+                        "  \"dataRetorno\": \"2023-08-16\",\n" +
+                        "  \"localDeDestino\": \"Recife\",\n" +
+                        "  \"regiao\": \"Nordeste\"\n" +
+                        "}")
+                .contentType(ContentType.JSON)
+
+        .when()
+                .post("/v1/viagens")
+        .then()
+                .log().all()
+                .assertThat()
+                .statusCode(201);
+
+
+
+
     }
 
 }
